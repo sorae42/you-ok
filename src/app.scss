@@ -1,0 +1,100 @@
+:root {
+    font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+
+    color: white;
+    background-color: #242424;
+
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+a {
+    color: white;
+}
+
+button,
+input[type='submit'] {
+    appearance: none;
+    background-color: transparent;
+    border: 2px solid #adadad;
+    border-radius: 10px;
+    box-sizing: border-box;
+    color: white;
+    cursor: pointer;
+    display: inline-block;
+    outline: none;
+    padding: 16px 24px;
+    margin: 24px 0;
+    text-align: center;
+    text-decoration: none;
+    transition: all 300ms cubic-bezier(0.23, 1, 0.32, 1);
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    will-change: transform;
+
+    &:disabled {
+        pointer-events: none;
+    }
+
+    &:hover {
+        color: black;
+        background-color: #adadad;
+        box-shadow: rgba(0, 0, 0, 0.25) 0 8px 15px;
+        transform: translateY(-2px);
+    }
+
+    &:active {
+        box-shadow: none;
+        transform: translateY(0);
+    }
+}
+
+input {
+    margin: 4px 0;
+
+    color: white;
+    background-color: transparent;
+    border: 1px solid rgb(209, 213, 219);
+    border-radius: 0.5rem;
+    box-sizing: border-box;
+    padding: 0.4rem 0.2rem;
+    text-decoration: none #d1d5db solid;
+    text-decoration-thickness: auto;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+
+    &:focus {
+        color: black;
+        background-color: white;
+        outline: 2px solid transparent;
+        outline-offset: 2px;
+    }
+
+    &:focus-visible {
+        box-shadow: none;
+    }
+}
+
+div#main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100vw;
+    height: 100vh;
+
+    form {
+        display: flex;
+        flex-direction: column;
+    }
+}
