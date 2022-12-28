@@ -1,5 +1,5 @@
 <svelte:head>
-    <title>[name here]</title>
+    <title>YouOkay</title>
 </svelte:head>
 
 <script lang="ts">
@@ -14,7 +14,8 @@
 <div id="main">
     <h1>Let your {get_random(subject)} know that you are {get_random(verb)}.</h1>
     <p>A way to let them know that you are doing fine today, even when you are away from social media.</p>
-    <a href="/status"><button>Get Started</button></a>
+    <a href="/signup"><button>Get Started</button></a>
+    <p>or <a href="/login">log in to your account</a>.</p>
 </div>
 
 <style lang="scss">
