@@ -33,7 +33,7 @@
   "type": "module",
   "dependencies": {
     "@auth/core": "^0.2.3",
-    "dotenv": "^16.0.3",
-    "mongodb": "^4.13.0"
+    "@supabase/supabase-js": "^2.2.2",
+    "dotenv": "^16.0.3"
   }
 }
