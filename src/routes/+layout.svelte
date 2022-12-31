@@ -6,7 +6,7 @@
 
 <nav>
     <div id="left">
-        <a href="/">[logo here]</a>
+        <a href="/">α[logo here]</a>
     </div>
     {#if false}
         <!-- the user is logged in-->
