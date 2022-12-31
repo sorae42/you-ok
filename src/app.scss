@@ -22,6 +22,12 @@ a {
     color: white;
 }
 
+input[disabled] {
+    border: 1px solid #999999;
+    color: #666666;
+    cursor: not-allowed;
+}
+
 button,
 input[type='submit'] {
     appearance: none;
@@ -53,16 +59,10 @@ input[type='submit'] {
         box-shadow: rgba(0, 0, 0, 0.25) 0 8px 15px;
         transform: translateY(-2px);
     }
-
-    &:active {
-        box-shadow: none;
-        transform: translateY(0);
-    }
 }
 
 input {
     margin: 4px 0;
-
     color: white;
     background-color: transparent;
     border: 1px solid rgb(209, 213, 219);
@@ -85,16 +85,18 @@ input {
     }
 }
 
-div#main {
+div {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
     width: 100vw;
     height: 100vh;
+}
 
-    form {
-        display: flex;
-        flex-direction: column;
-    }
+hr {
+    width: 69%;
+    margin: 24px auto;
+    border: 1px solid white;
+    border-radius: 15vw;
 }

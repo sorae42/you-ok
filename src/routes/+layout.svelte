@@ -1,20 +1,33 @@
-<script>
+<script lang="ts">
+    import { page } from '$app/stores';
+    import { supabase } from '$lib/supabaseClient';
+    import { invalidate } from '$app/navigation';
+    import { onMount } from 'svelte';
     import '../app.scss';
 
-    const name = 'sorae42';
+    onMount(() => {
+        const {
+            data: { subscription }
+        } = supabase.auth.onAuthStateChange(() => {
+            invalidate('supabase:auth');
+        });
+
+        return () => {
+            subscription.unsubscribe();
+        };
+
+    });
 </script>
 
 <nav>
-    <div id="left">
+    <span id="left">
         <a href="/">α[logo here]</a>
-    </div>
-    {#if false}
-        <!-- the user is logged in-->
-        <div id="right">
-            <a href="/people">People list</a>
-            <a href="/status">Set Status</a>
-            <a href="/profile/{name}">{name}</a>
-        </div>
+    </span>
+    {#if $page.data.session}
+        <span id="right">
+            <a href="/buddy"><strike>Buddy list</strike></a>
+            <a href="/profile">Profile</a>
+        </span>
     {/if}
 </nav>
 
@@ -30,7 +43,7 @@
         width: 100vw;
         height: 42px;
 
-        div {
+        span {
             padding: 0 42px;
 
             * {

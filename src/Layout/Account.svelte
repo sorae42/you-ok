@@ -8,7 +8,6 @@
     let loading = false;
     let username: string | null = null;
     let website: string | null = null;
-    let avatarUrl: string | null = null;
 
     onMount(() => {
         getProfile();
@@ -21,14 +20,13 @@
 
             const { data, error, status } = await supabase
                 .from('profiles')
-                .select(`username, website, avatar_url`)
+                .select(`username, website`)
                 .eq('id', user.id)
                 .single();
 
             if (data) {
                 username = data.username;
                 website = data.website;
-                avatarUrl = data.avatar_url;
             }
 
             if (error && status !== 406) throw error;
@@ -50,8 +48,8 @@
                 id: user.id,
                 username,
                 website,
-                avatar_url: avatarUrl,
-                updated_at: new Date()
+                updated_at: new Date(),
+                is_well: new Date()
             };
 
             let { error } = await supabase.from('profiles').upsert(updates);
@@ -81,30 +79,38 @@
     }
 </script>
 
-<form class="form-widget" on:submit|preventDefault={updateProfile}>
-    <div>
-        <label for="email">Email</label>
-        <input id="email" type="text" value={session.user.email} disabled />
-    </div>
-    <div>
-        <label for="username">Name</label>
+<div id="main">
+    <h1>Edit Profile</h1>
+    <form class="form-widget" on:submit|preventDefault={updateProfile}>
+        <h2>Basic Infomation</h2>
+        <label for="username">Username</label>
         <input id="username" type="text" bind:value={username} />
-    </div>
-    <div>
+
         <label for="website">Website</label>
         <input id="website" type="website" bind:value={website} />
-    </div>
 
-    <div>
         <input
             type="submit"
-            class="button block primary"
-            value={loading ? 'Loading...' : 'Update'}
+            value={loading ? 'Please wait warmly!' : 'Update'}
             disabled={loading}
         />
-    </div>
 
-    <div>
-        <button class="button block" on:click={signOut} disabled={loading}>Sign Out</button>
-    </div>
-</form>
+        <hr />
+
+        <h2>Account</h2>
+
+        <label for="email">Email</label>
+        <input id="email" type="text" value={session.user.email} disabled />
+
+        <hr />
+        <button on:click={signOut} disabled={loading}>Sign Out</button>
+    </form>
+</div>
+
+<style lang="scss">
+    form {
+        display: flex;
+        flex-direction: column;
+        width: 24%;
+    }
+</style>
