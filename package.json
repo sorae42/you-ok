@@ -33,6 +33,7 @@
   "type": "module",
   "dependencies": {
     "@auth/core": "^0.2.3",
+    "@supabase/auth-helpers-sveltekit": "^0.8.6",
     "@supabase/supabase-js": "^2.2.2",
     "dotenv": "^16.0.3"
   }
