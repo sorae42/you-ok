@@ -49,6 +49,7 @@ h6 {
     padding: 0 0 10px 0;
 }
 
+/* These button template look shit to me lol */
 button,
 input[type='submit'] {
     appearance: none;
@@ -82,32 +83,36 @@ input[type='submit'] {
     }
 }
 
-input {
-    margin: 4px 0;
-    color: white;
-    background-color: transparent;
-    border: 1px solid rgb(209, 213, 219);
-    border-radius: 0.5rem;
+input:not([type='submit'], [type='radio'], [type='checkbox']){
+    appearance: none;
+    border-radius: 4px;
+    border-width: 0;
+    box-shadow: rgba(45, 35, 66, 0.4) 0 2px 4px, rgba(45, 35, 66, 0.3) 0 7px 13px -3px,
+        #d6d6e7 0 -3px 0 inset;
     box-sizing: border-box;
-    padding: 0.4rem 0.2rem;
-    text-decoration: none #d1d5db solid;
-    text-decoration-thickness: auto;
-    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    cursor: pointer;
+    display: inline-flex;
+    height: 42px;
+    justify-content: center;
+    padding: 0 16px;
+    margin: 6px 0;
+    position: relative;
+    text-decoration: none;
+    transition: box-shadow 0.15s, transform 0.15s;
+    white-space: nowrap;
+    will-change: box-shadow, transform;
+    font-size: 16px;
+    outline: none;
 
-    &:focus {
-        color: black;
-        background-color: white;
-        outline: 2px solid transparent;
-        outline-offset: 2px;
-    }
-
-    &:focus-visible {
-        box-shadow: none;
+    &:hover, &:focus {
+        box-shadow: rgba(45, 35, 66, 0.4) 0 4px 8px, rgba(45, 35, 66, 0.3) 0 7px 13px -3px,
+            #d6d6e7 0 -3px 0 inset;
+        transform: translateY(-2px);
     }
 }
 
 input[disabled] {
-    border: 1px solid #999999;
+    opacity: 69%;
     color: #666666;
     cursor: not-allowed;
 }

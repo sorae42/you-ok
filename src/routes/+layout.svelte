@@ -30,8 +30,9 @@
     {/if}
 </nav>
 
-<div id="nav" />
-<slot />
+<div id="main">
+    <slot />
+</div>
 
 <footer>
     <span>
@@ -41,14 +42,11 @@
 </footer>
 
 <style lang="scss">
-    div#nav {
-        left: 0;
-        top: 0;
-        height: 100px;
+    div#main {
+        flex: 1;
     }
 
     nav {
-        position: fixed;
         display: flex;
         align-items: center;
         justify-content: space-around;
