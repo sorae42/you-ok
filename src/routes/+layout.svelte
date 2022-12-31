@@ -15,7 +15,6 @@
         return () => {
             subscription.unsubscribe();
         };
-
     });
 </script>
 
@@ -31,9 +30,23 @@
     {/if}
 </nav>
 
+<div id="nav" />
 <slot />
 
+<footer>
+    <span>
+        <p><strong>YouOkay</strong> Connected wherever.</p>
+        <p>Made with LOVE by sorae42</p>
+    </span>
+</footer>
+
 <style lang="scss">
+    div#nav {
+        left: 0;
+        top: 0;
+        height: 100px;
+    }
+
     nav {
         position: fixed;
         display: flex;
@@ -60,6 +73,21 @@
                 background-color: white;
                 color: black;
             }
+        }
+    }
+
+    footer {
+        width: 100%;
+        bottom: 0;
+        background-color: #2d2d2d;
+        margin-top: 24px;
+
+        span {
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-around;
         }
     }
 </style>

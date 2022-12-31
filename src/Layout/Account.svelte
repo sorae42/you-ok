@@ -94,15 +94,26 @@
             value={loading ? 'Please wait warmly!' : 'Update'}
             disabled={loading}
         />
-
         <hr />
+
+        <h2>Customization</h2>
+        <h3>Status</h3>
+        <p>Customize the "feeling well" status:</p>
+        <label for="good">Good</label>
+        <input type="text" id="good" placeholder="I'm doing well">
+        <label for="good">Bad</label>
+        <input type="text" id="good" placeholder="I'm feeling bad...">
+        <input
+            type="submit"
+            value={loading ? 'Please wait warmly!' : 'Update'}
+            disabled={loading}
+        />
+        <hr>
 
         <h2>Account</h2>
 
         <label for="email">Email</label>
         <input id="email" type="text" value={session.user.email} disabled />
-
-        <hr />
         <button on:click={signOut} disabled={loading}>Sign Out</button>
     </form>
 </div>
@@ -111,6 +122,6 @@
     form {
         display: flex;
         flex-direction: column;
-        width: 24%;
+        width: 42%;
     }
 </style>

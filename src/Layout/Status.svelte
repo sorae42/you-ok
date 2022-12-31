@@ -7,7 +7,7 @@
 </script>
 
 <div id="main">
-    <h2>Update your status</h2>
+    <h1>Update your status</h1>
     <form action="/" method="post">
         <span>
             <p>How are you feeling today?</p>

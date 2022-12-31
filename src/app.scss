@@ -16,16 +16,37 @@
 body {
     margin: 0;
     padding: 0;
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
 }
 
 a {
     color: white;
 }
 
-input[disabled] {
-    border: 1px solid #999999;
-    color: #666666;
-    cursor: not-allowed;
+div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100vw;
+}
+
+hr {
+    width: 69%;
+    margin: 24px auto;
+    border: 1px solid white;
+    border-radius: 15vw;
+}
+
+h2,
+h3,
+h4,
+h5,
+h6 {
+    margin: auto 0;
+    padding: 0 0 10px 0;
 }
 
 button,
@@ -85,18 +106,8 @@ input {
     }
 }
 
-div {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    width: 100vw;
-    height: 100vh;
-}
-
-hr {
-    width: 69%;
-    margin: 24px auto;
-    border: 1px solid white;
-    border-radius: 15vw;
+input[disabled] {
+    border: 1px solid #999999;
+    color: #666666;
+    cursor: not-allowed;
 }
