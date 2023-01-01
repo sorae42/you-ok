@@ -70,7 +70,7 @@
         }
 
         &#main, &#login {
-            height: 50vh;
+            height: 42vh;
         }
     }
 </style>
