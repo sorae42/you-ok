@@ -14,6 +14,7 @@
 
     // profile
     let username: string | null = null;
+    let pronoun: string | null = null;
     let private_profile: boolean | null = true;
 
     // connections
@@ -38,13 +39,14 @@
             const { data, error, status } = await supabase
                 .from('profiles')
                 .select(
-                    `username, website, private_profile, discord, twitter, github, string_good, string_bad`
+                    `username, website, private_profile, discord, twitter, github, string_good, string_bad, pronoun`
                 )
                 .eq('id', user.id)
                 .single();
 
             if (data) {
                 username = data.username;
+                pronoun = data.pronoun;
                 private_profile = data.private_profile;
 
                 string_good = data.string_good;
@@ -75,6 +77,7 @@
             const updates = {
                 id: user.id,
                 username,
+                pronoun,
                 website,
                 discord,
                 github,
@@ -117,6 +120,10 @@
     }
 </script>
 
+<svelte:head>
+    <title>Edit your Profile - YouOkay</title>
+</svelte:head>
+
 {#if loading}
     <Loading />
 {/if}
@@ -129,10 +136,13 @@
 
     {#if username === 'UNREGISTERED'}
         <p>
-            This username will not allow you to use the service and will hide your profile from the
-            public.
+            This username will not allow you to use the service and will hide your profile from
+            YouOkay.
         </p>
     {/if}
+
+    <label for="pronoun">Pronouns</label>
+    <input id="pronoun" type="text" bind:value={pronoun} />
 
     <span>
         <input id="private" type="checkbox" bind:checked={private_profile} />
@@ -140,6 +150,7 @@
         <p>
             This will make your profile completely invisible and only your buddies can see your
             profile.
+            <br />
         </p>
     </span>
 

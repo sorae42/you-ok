@@ -37,7 +37,13 @@
 <footer>
     <span>
         <p><strong>YouOkay</strong> - Connected wherever.</p>
-        <p>Made with <i class="fa-solid fa-heart"></i> by <a href="https://sorae42.github.io">sorae42</a>!</p>
+        <p>
+            Made with <i class="fa-solid fa-heart" /> by
+            <a href="https://sorae42.github.io">sorae42</a>!
+        </p>
+    </span>
+    <span>
+        <p>YouOkay is still in the alpha development.</p>
     </span>
 </footer>
 

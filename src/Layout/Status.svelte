@@ -67,6 +67,8 @@
 
             const updates = {
                 id: user.id,
+                is_well,
+                status_text,
                 last_well: new Date()
             };
 
@@ -79,12 +81,13 @@
             }
         } finally {
             loading = false;
+            getStatus();
         }
     };
 </script>
 
 <svelte:head>
-    <title>Update your status</title>
+    <title>Update your status - YouOkay</title>
 </svelte:head>
 
 {#if loading}
@@ -92,12 +95,12 @@
 {/if}
 
 {#if username === 'UNREGISTERED'}
-    <h2>You need a username!</h2>
+    <h2>Your username is not allowed!</h2>
+    <p>The username you are using is not allowed in YouOkay.</p>
     <p>
-        If you haven't set your username yet, please do so in the <a href="/profile">profile page</a
-        >!
+        If you haven't set your username yet, please do so in the
+        <a href="/profile">edit profile page</a>!
     </p>
-    <p>Also, your username can't be "UNREGISTERED" either. It doesn't make sense either, is it?</p>
 {:else}
     <h1>Update your status</h1>
     <form method="post" on:submit|preventDefault={updateStatus}>

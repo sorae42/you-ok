@@ -1,5 +1,6 @@
 <script lang="ts">
-    import Profile from "src/Layout/Profile.svelte";
+    import { page } from "$app/stores";
+    import Profile from "../../../Layout/Profile.svelte";
 </script>
 
-<Profile />
+<Profile username={$page.params.profile}/>
