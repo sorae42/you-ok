@@ -2,6 +2,7 @@
     import { supabase } from '$lib/supabaseClient';
     import type { AuthSession } from '@supabase/supabase-js';
     import { onMount } from 'svelte';
+    import { DateTime } from 'luxon';
 
     import Loading from './Loading.svelte';
 
@@ -17,8 +18,9 @@
 
     let is_well: boolean | null = false;
     let last_well: Date | null = null;
+    let last_hour: Number;
 
-    let now = new Date();
+    let now = DateTime.now();
 
     onMount(() => {
         getStatus();
@@ -44,9 +46,8 @@
                 last_well = data.last_well;
             }
 
-            let last_well_date = new Date(last_well);
-
-            if (last_well_date.getTime() - now.getTime() > 86400000) {}
+            // this line works, idk why it give ts error :/
+            last_hour = now.diff(DateTime.fromISO(last_well), 'hours').toObject().hours;
 
             if (string_good?.length === 0) string_good = "I'm doing good!";
             if (string_bad?.length === 0) string_bad = "I'm feeling bad...";
@@ -100,28 +101,30 @@
 {:else}
     <h1>Update your status</h1>
     <form method="post" on:submit|preventDefault={updateStatus}>
-        <span>
-            <p>How are you feeling today?</p>
-            <input
-                type="radio"
-                id="good"
-                name="quick-stat"
-                bind:group={is_well}
-                value={true}
-                required
-            />
-            <label for="good">{string_good}</label>
-            <br />
-            <input
-                type="radio"
-                id="bad"
-                name="quick-stat"
-                bind:group={is_well}
-                value={false}
-                required
-            />
-            <label for="bad">{string_bad}</label>
-        </span>
+        {#if last_hour > 24}
+            <span>
+                <p>How are you feeling today?</p>
+                <input
+                    type="radio"
+                    id="good"
+                    name="quick-stat"
+                    bind:group={is_well}
+                    value={true}
+                    required
+                />
+                <label for="good">{string_good}</label>
+                <br />
+                <input
+                    type="radio"
+                    id="bad"
+                    name="quick-stat"
+                    bind:group={is_well}
+                    value={false}
+                    required
+                />
+                <label for="bad">{string_bad}</label>
+            </span>
+        {/if}
         <span>
             <label for="long-stat">Status (limit to 200 characters)</label>
             <input
