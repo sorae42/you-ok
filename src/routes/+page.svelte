@@ -7,5 +7,5 @@
 {#if !$page.data.session}
     <Homepage />
 {:else}
-    <Status />
+    <Status session={$page.data.session} />
 {/if}

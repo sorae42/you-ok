@@ -1,3 +1,7 @@
+@import "./lib/fontawesome/scss/fontawesome.scss";
+@import "./lib/fontawesome/scss/solid.scss";
+@import "./lib/fontawesome/scss/brands.scss";
+
 :root {
     font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
     font-size: 16px;
@@ -50,7 +54,6 @@ h3,
 h4,
 h5,
 h6 {
-    margin: auto 0;
     padding: 0 0 10px 0;
 }
 
@@ -58,6 +61,7 @@ h6 {
 button,
 input[type='submit'] {
     appearance: none;
+    width: 100%;
     background-color: transparent;
     border: 2px solid #adadad;
     border-radius: 10px;

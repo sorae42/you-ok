@@ -18,10 +18,6 @@
     });
 </script>
 
-<svelte:head>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-</svelte:head>
-
 <nav>
     <span id="left">
         <a href="/">α[logo here]</a>
@@ -41,7 +37,7 @@
 <footer>
     <span>
         <p><strong>YouOkay</strong> - Connected wherever.</p>
-        <p>Made with <i class="fa fa-heart"></i> by <a href="https://sorae42.github.io">sorae42</a>!</p>
+        <p>Made with <i class="fa-solid fa-heart"></i> by <a href="https://sorae42.github.io">sorae42</a>!</p>
     </span>
 </footer>
 
