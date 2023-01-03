@@ -80,18 +80,21 @@
     <Loading />
 {:else}
     <div id="profile">
-        <img src="$lib/assets/default.png" alt="" />
-        <span>
-            <h2>{username}</h2>
-            <span>({pronoun})</span>
-        </span>
+        <div id="intro">
+            <img src="$lib/assets/default.png" alt="" />
+            <span>
+                <h2>{username}</h2>
+                <span>({pronoun})</span>
+            </span>
+        </div>
 
         <h3>Connections</h3>
         <div id="connections">
             {#each Object.entries(connections) as [social, link]}
                 <span>
                     <p>
-                        <i class="fa-brands fa-fw fa-{social}" /> {link}
+                        <i class="fa-brands fa-fw fa-{social}" />
+                        {link}
                     </p>
                 </span>
             {/each}
@@ -117,14 +120,26 @@
     div#profile {
         background-color: rgb(84, 84, 84);
         margin-top: 42px;
+        
+        div#intro {
+            flex-direction: row;
+            width: 50%;
+            padding: 0;
+        }
+
+        div#connections {
+            display: block;
+            padding: 0;
+        }
 
         i {
             font-size: 24px;
         }
 
         img {
-            width: 24%;
+            width: 42%;
             height: auto;
+            border: 2px solid white;
             border-radius: 50%;
             margin: 12px;
         }
@@ -133,9 +148,5 @@
             display: inline;
         }
 
-        div#connections {
-            display: block;
-            padding: 0;
-        }
     }
 </style>
