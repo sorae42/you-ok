@@ -20,9 +20,10 @@
     let string_bad: string | null = "I'm feeling bad...";
 
     let is_well: boolean | null = false;
-    let last_well: Date | null = null;
+    let last_well: string;
 
     let now = DateTime.now();
+    let last_hour: number | undefined;
 
     onMount(async () => {
         try {
@@ -55,6 +56,8 @@
                 private_profile = data.private_profile;
             }
 
+            last_hour = now.diff(DateTime.fromISO(last_well), 'hours').toObject().hours;
+
             if (string_good?.length === 0) string_good = "I'm doing good!";
             if (string_bad?.length === 0) string_bad = "I'm feeling bad...";
 
@@ -81,52 +84,88 @@
             <img src="$lib/assets/default.png" alt="" />
             <span>
                 <h2>{username}</h2>
-                <span>({pronoun})</span>
+                <p>({pronoun || 'pronoun not specified'})</p>
             </span>
+            <button disabled><i class="fa-solid fa-user-plus" /> <strong>Add buddy</strong></button>
         </div>
 
-        <h3>Connections</h3>
+        <!-- TODO: Rework -->
         <div id="connections">
+            <h3>Connections</h3>
             {#each Object.entries(connections) as [social, link]}
-                <span>
-                    <p>
-                        <i class="fa-brands fa-fw fa-{social}" />
-                        {link}
-                    </p>
-                </span>
+                {#if link !== undefined && link !== null && link !== ''}
+                    <span>
+                        <p>
+                            <i class="fa-brands fa-fw fa-{social}" />
+                            {link}
+                        </p>
+                    </span>
+                {/if}
             {/each}
-            <p><i class="fa-solid fa-fw fa-globe" /> <a href={website}>{website}</a></p>
+            {#if website !== null && website.length > 0}
+                <p><i class="fa-solid fa-fw fa-globe" /> <a href={website}>{website}</a></p>
+            {/if}
         </div>
     </div>
+
     <div id="status">
-        <h2>{username}'s today status:</h2>
-        <h1>{is_well ? string_good : string_bad}</h1>
-        {#if status_text !== null}
-            <blockquote>Message: {status_text}</blockquote>
+        {#if last_hour === undefined}
+            <h3>{username} has just created this account and haven't updated their status yet.</h3>
+        {:else if last_hour < 25}
+            <h2>{username}'s today status:</h2>
+            <h1>{is_well ? string_good : string_bad}</h1>
+            {#if status_text !== null}
+                <blockquote>Message: {status_text}</blockquote>
+            {/if}
+        {:else}
+            <h3>{username} has not updated their status for the past 24 hours.</h3>
+            <p>Their last status was "{is_well ? string_good : string_bad}"</p>
         {/if}
     </div>
 {/if}
 
 <style lang="scss">
-    div {
-        width: 42%;
+    div#profile {
+        width: 50%;
         padding: 24px;
         border-radius: 15px;
-    }
-
-    div#profile {
         background-color: rgb(84, 84, 84);
         margin-top: 42px;
-        
+        flex-direction: row;
+
+        div {
+            width: 100%;
+        }
+
         div#intro {
-            flex-direction: row;
-            width: 50%;
+            flex-direction: column;
+            width: fit-content;
             padding: 0;
+            text-align: center;
+
+            button {
+                display: flex;
+                align-items: center;
+                justify-content: space-evenly;
+            }
         }
 
         div#connections {
             display: block;
-            padding: 0;
+            border-left: 3px solid white;
+            padding-left: 12px;
+            margin-left: 12px;
+
+            p {
+                display: flex;
+                align-items: center;
+                overflow: hidden;
+                white-space: nowrap;
+
+                i {
+                    margin-left: 5px;
+                }
+            }
         }
 
         i {
@@ -134,16 +173,22 @@
         }
 
         img {
-            width: 42%;
+            width: 50%;
             height: auto;
             border: 2px solid white;
             border-radius: 50%;
             margin: 12px;
         }
 
-        h2 {
+        h2,
+        h3 {
             display: inline;
+            padding: 0;
         }
+    }
 
+    div#status {
+        width: 42%;
+        text-align: center;
     }
 </style>

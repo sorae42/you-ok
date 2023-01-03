@@ -1,6 +1,6 @@
-@import "./lib/fontawesome/scss/fontawesome.scss";
-@import "./lib/fontawesome/scss/solid.scss";
-@import "./lib/fontawesome/scss/brands.scss";
+@import './lib/fontawesome/scss/fontawesome.scss';
+@import './lib/fontawesome/scss/solid.scss';
+@import './lib/fontawesome/scss/brands.scss';
 
 :root {
     font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
@@ -71,7 +71,7 @@ input[type='submit'] {
     display: inline-block;
     outline: none;
     padding: 16px 24px;
-    margin: 24px 0;
+    margin: 6px 0;
     text-align: center;
     text-decoration: none;
     transition: all 300ms cubic-bezier(0.23, 1, 0.32, 1);
@@ -81,7 +81,9 @@ input[type='submit'] {
     will-change: transform;
 
     &:disabled {
-        pointer-events: none;
+        opacity: 42%;
+        color: #666666;
+        cursor: not-allowed;
     }
 
     &:hover {
@@ -92,7 +94,7 @@ input[type='submit'] {
     }
 }
 
-input:not([type='submit'], [type='radio'], [type='checkbox']){
+input:not([type='submit'], [type='radio'], [type='checkbox']) {
     appearance: none;
     border-radius: 4px;
     border-width: 0;
@@ -113,15 +115,10 @@ input:not([type='submit'], [type='radio'], [type='checkbox']){
     font-size: 16px;
     outline: none;
 
-    &:hover, &:focus {
+    &:hover,
+    &:focus {
         box-shadow: rgba(45, 35, 66, 0.4) 0 4px 8px, rgba(45, 35, 66, 0.3) 0 7px 13px -3px,
             #d6d6e7 0 -3px 0 inset;
         transform: translateY(-2px);
     }
-}
-
-input[disabled] {
-    opacity: 69%;
-    color: #666666;
-    cursor: not-allowed;
 }

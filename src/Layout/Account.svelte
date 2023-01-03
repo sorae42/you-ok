@@ -18,7 +18,7 @@
     let private_profile: boolean | null = true;
 
     // connections
-    let website: string | null = null;
+    let website: string | undefined;
     let discord: string | null = null;
     let twitter: string | null = null;
     let github: string | null = null;
@@ -58,6 +58,7 @@
                 github = data.github;
             }
 
+            if (status === 409) throw new Error("Sorry, but this username is invalid.");
             if (error && status !== 406) throw error;
         } catch (error) {
             if (error instanceof Error) {
@@ -73,6 +74,8 @@
             loading = true;
 
             const { user } = session;
+
+            website = website?.split('?')[0];
 
             const updates = {
                 id: user.id,
