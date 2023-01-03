@@ -145,19 +145,3 @@
         <a href="/profile/{username}"><button>View my profile</button></a>
     </form>
 {/if}
-
-<style lang="scss">
-    form {
-        display: flex;
-        flex-direction: column;
-        width: 42%;
-
-        input[type='text'] {
-            width: 100%;
-        }
-
-        span {
-            margin: 24px 0;
-        }
-    }
-</style>

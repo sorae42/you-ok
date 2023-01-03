@@ -136,17 +136,7 @@
     <h2><i class="fa-solid fa-user" /> Profile</h2>
     <label for="username">Username</label>
     <input id="username" type="text" bind:value={username} required />
-
-    {#if username === 'UNREGISTERED'}
-        <p>
-            This username will not allow you to use the service and will hide your profile from
-            YouOkay.
-        </p>
-    {/if}
-
-    <label for="pronoun">Pronouns</label>
-    <input id="pronoun" type="text" bind:value={pronoun} />
-
+    
     <span>
         <input id="private" type="checkbox" bind:checked={private_profile} />
         <label for="private">Make profile private</label>
@@ -156,6 +146,10 @@
             <br />
         </p>
     </span>
+    
+    <label for="pronoun">Pronouns</label>
+    <input id="pronoun" type="text" bind:value={pronoun} />
+
 
     <h3>Connections</h3>
     <label for="website"><i class="fa-brands fa-discord" /> Discord</label>
@@ -199,13 +193,4 @@
 </form>
 
 <style lang="scss">
-    form {
-        display: flex;
-        flex-direction: column;
-        width: 42%;
-
-        span {
-            margin: 24px 0;
-        }
-    }
 </style>

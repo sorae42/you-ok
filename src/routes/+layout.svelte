@@ -19,14 +19,14 @@
 </script>
 
 <nav>
-    <span id="left">
-        <a href="/">α[logo here]</a>
-    </span>
     {#if $page.data.session}
-        <span id="right">
+        <span id="left">
+            <a href="/">Update Status</a>
             <a href="/buddy"><strike>Buddy list</strike></a>
             <a href="/profile">Profile</a>
         </span>
+    {:else}
+        <span><strong>YouOkay</strong></span>
     {/if}
 </nav>
 

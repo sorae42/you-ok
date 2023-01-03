@@ -126,15 +126,16 @@
 
 <style lang="scss">
     div#profile {
-        width: 50%;
+        width: 42em;
         padding: 24px;
         border-radius: 15px;
         background-color: rgb(84, 84, 84);
         margin-top: 42px;
         flex-direction: row;
-
-        div {
-            width: 100%;
+        
+        @media screen and (max-width: 768px) {
+            width: 20em;
+            flex-direction: column;
         }
 
         div#intro {
@@ -146,15 +147,13 @@
             button {
                 display: flex;
                 align-items: center;
-                justify-content: space-evenly;
+                justify-content: center;
+                font-size: 16px;
             }
         }
 
         div#connections {
-            display: block;
-            border-left: 3px solid white;
-            padding-left: 12px;
-            margin-left: 12px;
+            width: inherit;
 
             p {
                 display: flex;
@@ -163,13 +162,10 @@
                 white-space: nowrap;
 
                 i {
-                    margin-left: 5px;
+                    margin-right: 4px;
+                    font-size: 24px;
                 }
             }
-        }
-
-        i {
-            font-size: 24px;
         }
 
         img {
@@ -188,7 +184,7 @@
     }
 
     div#status {
-        width: 42%;
+        width: 25em;
         text-align: center;
     }
 </style>
