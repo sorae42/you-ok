@@ -12,10 +12,8 @@
     let private_profile: boolean | null = true;
     let pronoun: string | null = null;
 
+    let connections = {};
     let website: string | null = null;
-    let discord: string | null = null;
-    let twitter: string | null = null;
-    let github: string | null = null;
 
     let status_text: string | null = null;
     let string_good: string | null = "I'm doing good!";
@@ -41,10 +39,12 @@
             if (data) {
                 pronoun = data.pronoun;
 
+                connections = {
+                    twitter: data.twitter,
+                    discord: data.discord,
+                    github: data.github
+                };
                 website = data.website;
-                discord = data.discord;
-                twitter = data.twitter;
-                github = data.github;
 
                 string_good = data.string_good;
                 string_bad = data.string_bad;
@@ -68,7 +68,7 @@
     });
 
     function notFound() {
-        return error(404, "Not Found");
+        return error(404, 'Not Found');
     }
 </script>
 
@@ -79,13 +79,63 @@
 {#if loading}
     <Loading />
 {:else}
-    <h2>{username}'s today status:</h2>
-    <p>({pronoun})</p>
-    <h1>{is_well ? string_good : string_bad}</h1>
-    {#if status_text !== null}
-        <blockquote>Message: {status_text}</blockquote>
-    {/if}
+    <div id="profile">
+        <img src="$lib/assets/default.png" alt="" />
+        <span>
+            <h2>{username}</h2>
+            <span>({pronoun})</span>
+        </span>
+
+        <h3>Connections</h3>
+        <div id="connections">
+            {#each Object.entries(connections) as [social, link]}
+                <span>
+                    <p>
+                        <i class="fa-brands fa-fw fa-{social}" /> {link}
+                    </p>
+                </span>
+            {/each}
+            <p><i class="fa-solid fa-fw fa-globe" /> <a href={website}>{website}</a></p>
+        </div>
+    </div>
+    <div id="status">
+        <h2>{username}'s today status:</h2>
+        <h1>{is_well ? string_good : string_bad}</h1>
+        {#if status_text !== null}
+            <blockquote>Message: {status_text}</blockquote>
+        {/if}
+    </div>
 {/if}
 
 <style lang="scss">
+    div {
+        width: 42%;
+        padding: 24px;
+        border-radius: 15px;
+    }
+
+    div#profile {
+        background-color: rgb(84, 84, 84);
+        margin-top: 42px;
+
+        i {
+            font-size: 24px;
+        }
+
+        img {
+            width: 24%;
+            height: auto;
+            border-radius: 50%;
+            margin: 12px;
+        }
+
+        h2 {
+            display: inline;
+        }
+
+        div#connections {
+            display: block;
+            padding: 0;
+        }
+    }
 </style>

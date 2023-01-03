@@ -17,8 +17,8 @@
     let string_bad: string | null = "I'm feeling bad...";
 
     let is_well: boolean | null = false;
-    let last_well: Date | null = null;
-    let last_hour: Number;
+    let last_well: string;
+    let last_hour: number | undefined;
 
     let now = DateTime.now();
 
@@ -46,7 +46,6 @@
                 last_well = data.last_well;
             }
 
-            // this line works, idk why it give ts error :/
             last_hour = now.diff(DateTime.fromISO(last_well), 'hours').toObject().hours;
 
             if (string_good?.length === 0) string_good = "I'm doing good!";
@@ -104,7 +103,7 @@
 {:else}
     <h1>Update your status</h1>
     <form method="post" on:submit|preventDefault={updateStatus}>
-        {#if last_hour > 24}
+        {#if last_hour !== undefined && last_hour > 24}
             <span>
                 <p>How are you feeling today?</p>
                 <input
