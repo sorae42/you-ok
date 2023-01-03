@@ -101,7 +101,7 @@
 {:else}
     <h1>Update your status</h1>
     <form method="post" on:submit|preventDefault={updateStatus}>
-        {#if last_hour !== undefined && last_hour > 24}
+        {#if last_hour === undefined || last_hour > 24}
             <span>
                 <p>How are you feeling today?</p>
                 <input
