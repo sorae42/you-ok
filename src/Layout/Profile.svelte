@@ -2,9 +2,9 @@
     import { supabase } from '$lib/supabaseClient';
     import { onMount } from 'svelte';
     import { DateTime } from 'luxon';
-    import { error } from '@sveltejs/kit';
 
     import Loading from './Loading.svelte';
+    import { error as routeError } from '@sveltejs/kit';
 
     let loading = false;
 
@@ -58,7 +58,8 @@
             if (string_good?.length === 0) string_good = "I'm doing good!";
             if (string_bad?.length === 0) string_bad = "I'm feeling bad...";
 
-            if (status === 406 || private_profile === true) notFound();
+            // this currently doesn't work
+            if (status === 406 || private_profile === true) throw routeError(404, 'Not Found');
             if (error && status !== 406) throw error;
         } catch (err) {
             if (err instanceof Error) alert(err);
@@ -66,10 +67,6 @@
             loading = false;
         }
     });
-
-    function notFound() {
-        return error(404, 'Not Found');
-    }
 </script>
 
 <svelte:head>
