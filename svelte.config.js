@@ -16,7 +16,8 @@ const config = {
     ],
     kit: {
         adapter: adapter()
-    }
+    },
+    target: '#svelte'
 };
 
 export default config;
