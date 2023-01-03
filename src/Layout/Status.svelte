@@ -91,9 +91,7 @@
 
 {#if loading}
     <Loading />
-{/if}
-
-{#if username === 'UNREGISTERED'}
+{:else if username === 'UNREGISTERED'}
     <h2>Your username is not allowed!</h2>
     <p>The username you are using is not allowed in YouOkay.</p>
     <p>
@@ -122,6 +120,7 @@
                     name="quick-stat"
                     bind:group={is_well}
                     value={false}
+                    checked
                     required
                 />
                 <label for="bad">{string_bad}</label>
@@ -143,6 +142,7 @@
             However, you can still change the status at will.
         </p>
         <input type="submit" value="Update my status" />
+        <a href="/profile/{username}"><button>View my profile</button></a>
     </form>
 {/if}
 
