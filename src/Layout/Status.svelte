@@ -5,6 +5,7 @@
     import { DateTime } from 'luxon';
 
     import Loading from './Loading.svelte';
+    import Notice from './Notice.svelte';
 
     export let session: AuthSession;
 
@@ -88,6 +89,13 @@
 <svelte:head>
     <title>Update your status - YouOkay</title>
 </svelte:head>
+
+<Notice
+    icon="circle-info"
+    title="Mobile Layout is here!"
+    content="If there's any weird layout on mobile devices, please let me know."
+    color="#3A6EA5"
+/>
 
 {#if loading}
     <Loading />

@@ -132,7 +132,7 @@
         background-color: rgb(84, 84, 84);
         margin-top: 42px;
         flex-direction: row;
-        
+
         @media screen and (max-width: 768px) {
             width: 20em;
             flex-direction: column;
@@ -140,7 +140,7 @@
 
         div#intro {
             flex-direction: column;
-            width: fit-content;
+            width: 20em;
             padding: 0;
             text-align: center;
 
@@ -169,8 +169,7 @@
         }
 
         img {
-            width: 50%;
-            height: auto;
+            width: 8em;
             border: 2px solid white;
             border-radius: 50%;
             margin: 12px;
