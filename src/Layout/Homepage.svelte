@@ -54,20 +54,11 @@
         <br />
         <input type="submit" value={loading ? 'Please wait warmly!' : 'Send magic link'} />
     </form>
-    <a href="/">Why "magic link"?</a>
 </div>
 
 <style lang="scss">
     div {
-        form {
-            display: flex;
-            flex-direction: column;
-            width: 24%;
-
-            input[type='email'] {
-                width: 100%;
-            }
-        }
+        text-align: center;
 
         &#main, &#login {
             height: 42vh;

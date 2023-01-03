@@ -29,17 +29,23 @@ a {
     color: white;
 }
 
-div#notice {
-    display: block;
-    width: auto;
-}
-
 div {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
     width: 100vw;
+    text-align: center;
+
+    form {
+        display: flex;
+        flex-direction: column;
+        width: 23.5em;
+
+        label {
+            text-align: left;
+        }
+    }
 }
 
 hr {
