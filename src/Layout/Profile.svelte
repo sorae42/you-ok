@@ -60,9 +60,7 @@
 
             if (string_good?.length === 0) string_good = "I'm doing good!";
             if (string_bad?.length === 0) string_bad = "I'm feeling bad...";
-
-            // this currently doesn't work
-            if (status === 406 || private_profile === true) throw routeError(404, 'Not Found');
+            
             if (error && status !== 406) throw error;
         } catch (err) {
             if (err instanceof Error) alert(err);

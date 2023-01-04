@@ -20,13 +20,13 @@
 
 <nav>
     {#if $page.data.session}
-        <span id="left">
+        <span>
             <a href="/">Update Status</a>
-            <a href="/buddy"><strike>Buddy list</strike></a>
-            <a href="/profile">Profile</a>
+            <a href="/buddy">Buddy list</a>
+            <a href="/profile">Edit Profile</a>
         </span>
     {:else}
-        <span><strong>YouOkay</strong></span>
+        <span><a href="/"><strong>YouOkay</strong></a></span>
     {/if}
 </nav>
 
@@ -61,23 +61,25 @@
         height: 42px;
 
         span {
-            padding: 0 42px;
-
-            * {
-                padding: 0 10px;
-            }
-        }
-
-        a {
-            color: white;
-            text-decoration: none;
+            display: flex;
+            align-items: center;
             height: 100%;
-
-            &:hover {
-                background-color: white;
-                color: black;
+            
+            a {
+                display: flex;
+                align-items: center;
+                height: inherit;
+                padding: 0 12px;
+                color: white;
+                text-decoration: none;
+    
+                &:hover {
+                    background-color: white;
+                    color: black;
+                }
             }
         }
+        
     }
 
     footer {
