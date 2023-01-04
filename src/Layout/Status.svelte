@@ -20,6 +20,7 @@
     let is_well: boolean | null = false;
     let last_well: string;
     let last_hour: number | undefined;
+    let has_created: boolean | null = true;
 
     let now = DateTime.now();
 
@@ -34,7 +35,9 @@
 
             const { data, error, status } = await supabase
                 .from('profiles')
-                .select(`username, is_well, last_well, status_text, string_good, string_bad`)
+                .select(
+                    `username, is_well, last_well, status_text, string_good, string_bad, has_created`
+                )
                 .eq('id', user.id)
                 .single();
 
@@ -45,6 +48,7 @@
                 status_text = data.status_text;
                 is_well = data.is_well;
                 last_well = data.last_well;
+                has_created = data.has_created;
             }
 
             last_hour = now.diff(DateTime.fromISO(last_well), 'hours').toObject().hours;
@@ -69,6 +73,7 @@
                 id: user.id,
                 is_well,
                 status_text,
+                has_created: false,
                 last_well: new Date()
             };
 
@@ -90,13 +95,6 @@
     <title>Update your status - YouOkay</title>
 </svelte:head>
 
-<Notice
-    icon="circle-info"
-    title="Mobile Layout is here!"
-    content="If there's any weird layout on mobile devices, please let me know."
-    color="#3A6EA5"
-/>
-
 {#if loading}
     <Loading />
 {:else if username === 'UNREGISTERED'}
@@ -107,6 +105,15 @@
         <a href="/profile">edit profile page</a>!
     </p>
 {:else}
+    {#if has_created}
+        <Notice
+            icon="hand-peace"
+            title="Welcome!"
+            content="If you haven't set up your profile and username yet, head to Edit Profile and start there!"
+            color="green"
+            textColor={true}
+        />
+    {/if}
     <h1>Update your status</h1>
     <form method="post" on:submit|preventDefault={updateStatus}>
         {#if last_hour === undefined || last_hour > 24}

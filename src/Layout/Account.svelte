@@ -6,6 +6,7 @@
     import { goto } from '$app/navigation';
 
     import Loading from './Loading.svelte';
+    import Notice from './Notice.svelte';
 
     export let session: AuthSession;
 
@@ -87,6 +88,7 @@
                 twitter,
                 string_bad,
                 string_good,
+                has_created: false,
                 private_profile,
                 updated_at: new Date()
             };
@@ -146,6 +148,8 @@
             <br />
         </p>
     </span>
+
+    <Notice icon="triangle-exclamation" title="Warning" content="Private profile is a work in progress."/>
     
     <label for="pronoun">Pronouns</label>
     <input id="pronoun" type="text" bind:value={pronoun} />
