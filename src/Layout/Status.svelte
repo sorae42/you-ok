@@ -67,13 +67,15 @@
     const updateStatus = async () => {
         try {
             loading = true;
-            const { user } = session;
+            
+            let day: Date = new Date(last_well);
 
+            if (is_well !== is_well) day = new Date();
+            
             const updates = {
-                id: user.id,
                 is_well,
                 status_text,
-                last_well: new Date()
+                last_well: day
             };
 
             let { error } = await supabase.from('profiles').upsert(updates);
