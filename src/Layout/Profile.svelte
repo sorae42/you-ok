@@ -5,6 +5,7 @@
 
     import Loading from './Loading.svelte';
     import { error as routeError } from '@sveltejs/kit';
+    import { goto } from '$app/navigation';
 
     let loading = false;
 
@@ -60,10 +61,14 @@
 
             if (string_good?.length === 0) string_good = "I'm doing good!";
             if (string_bad?.length === 0) string_bad = "I'm feeling bad...";
-            
+
+            if (status === 406) {
+                goto('/profile-error');
+                throw routeError(404, "Not Found");
+            }
             if (error && status !== 406) throw error;
-        } catch (err) {
-            if (err instanceof Error) alert(err);
+        } catch (error) {
+            if (error instanceof Error) alert(error);
         } finally {
             loading = false;
         }

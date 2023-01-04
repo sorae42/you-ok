@@ -3,8 +3,10 @@
 </svelte:head>
 
 <div id="main">
-    <h1>Oops!</h1>
-    <p>Something just happened! Check back later!</p>
+    <i class="fa-solid fa-question" style="position:relative;left:24px;rotate:12deg"></i>
+    <i class="fa-solid fa-user" style="font-size:50px"></i>
+    <h1>Profile Not Found!</h1>
+    <p>I couldn't find the profile that you are looking for. Perhaps check your spelling?</p>
 </div>
 
 <style lang="scss">
