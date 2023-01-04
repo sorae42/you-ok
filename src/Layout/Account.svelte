@@ -2,11 +2,11 @@
     import { onMount } from 'svelte';
     import type { AuthSession } from '@supabase/supabase-js';
     import { supabase } from '$lib/supabaseClient';
-    import { fade } from 'svelte/transition';
     import { goto } from '$app/navigation';
 
     import Loading from './Loading.svelte';
     import Notice from './Notice.svelte';
+    import { fade } from 'svelte/transition';
 
     export let session: AuthSession;
 
@@ -59,7 +59,7 @@
                 github = data.github;
             }
 
-            if (status === 409) throw new Error("Sorry, but this username is invalid.");
+            if (status === 409) throw new Error('Sorry, but this username is invalid.');
             if (error && status !== 406) throw error;
         } catch (error) {
             if (error instanceof Error) {
@@ -138,7 +138,7 @@
     <h2><i class="fa-solid fa-user" /> Profile</h2>
     <label for="username">Username</label>
     <input id="username" type="text" bind:value={username} required />
-    
+
     <span>
         <input id="private" type="checkbox" bind:checked={private_profile} />
         <label for="private">Make profile private</label>
@@ -149,11 +149,16 @@
         </p>
     </span>
 
-    <Notice icon="triangle-exclamation" title="Warning" content="Private profile is a work in progress."/>
-    
+    {#if private_profile}
+        <Notice
+            icon="triangle-exclamation"
+            title="Please note!"
+            content="No one will be able to view your profile as for now. Please wait patiently for the buddy system to be implemented."
+        />
+    {/if}
+
     <label for="pronoun">Pronouns</label>
     <input id="pronoun" type="text" bind:value={pronoun} />
-
 
     <h3>Connections</h3>
     <label for="website"><i class="fa-brands fa-discord" /> Discord</label>
@@ -184,9 +189,14 @@
     <h3>Update settings?</h3>
     <input type="submit" value={loading ? 'Please wait warmly!' : 'Update'} disabled={loading} />
     {#if notice}
-        <div id="notice" out:fade>
-            <p><i class="fa-solid fa-check" /> Profile updated successfully!</p>
-        </div>
+        <span out:fade>
+            <Notice
+                icon="check"
+                title="Profile successfully updated!"
+                color="green"
+                textColor={true}
+            />
+        </span>
     {/if}
 
     <h3>View your profile?</h3>

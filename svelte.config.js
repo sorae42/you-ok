@@ -11,7 +11,7 @@ const config = {
         preprocess({
             scss: {
                 prependData: '@use "src/variables.scss" as *;'
-            }
+            },
         })
     ],
     kit: {
