@@ -6,8 +6,11 @@
 
     import Loading from './Loading.svelte';
     import Notice from './Notice.svelte';
+    import { page } from '$app/stores';
 
     export let session: AuthSession;
+
+    const { user } = $page.data.session;
 
     let loading = false;
 
@@ -67,12 +70,19 @@
     const updateStatus = async () => {
         try {
             loading = true;
-            
-            let day: Date = new Date(last_well);
 
-            if (is_well !== is_well) day = new Date();
-            
+            let day: Date;
+
+            if (last_well == null || is_well !== is_well) {
+                day = new Date();
+            } else {
+                day = new Date(last_well);
+            }
+
+            console.log(day);
+
             const updates = {
+                id: user.id,
                 is_well,
                 status_text,
                 last_well: day
