@@ -10,6 +10,8 @@
 
     export let session: AuthSession;
 
+    const { user } = session;
+
     let loading = false;
     let notice = false;
 
@@ -35,7 +37,6 @@
     const getProfile = async () => {
         try {
             loading = true;
-            const { user } = session;
 
             const { data, error, status } = await supabase
                 .from('profiles')
@@ -73,8 +74,6 @@
     async function updateProfile() {
         try {
             loading = true;
-
-            const { user } = session;
 
             website = website?.split('?')[0];
 
@@ -186,8 +185,8 @@
     <input id="email" type="text" value={session.user.email} disabled />
     <hr />
 
-    <h3>Update settings?</h3>
-    <input type="submit" value={loading ? 'Please wait warmly!' : 'Update'} disabled={loading} />
+    <h3>Update profile?</h3>
+    <input type="submit" value={loading ? 'Please wait warmly!' : 'Update profile'} disabled={loading} />
     {#if notice}
         <span out:fade>
             <Notice

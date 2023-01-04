@@ -73,7 +73,6 @@
                 id: user.id,
                 is_well,
                 status_text,
-                has_created: false,
                 last_well: new Date()
             };
 
