@@ -23,7 +23,7 @@
         <span id="left">
             <a href="/">Update Status</a>
             <a href="/buddy"><strike>Buddy list</strike></a>
-            <a href="/profile">Profile</a>
+            <a href="/profile">Edit Profile</a>
         </span>
     {:else}
         <span><strong>YouOkay</strong></span>
