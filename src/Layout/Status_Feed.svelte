@@ -3,7 +3,7 @@
     import { supabase } from '$lib/supabaseClient';
     import { onMount } from 'svelte';
     import { DateTime } from 'luxon';
-    import { timeFormatter } from '$lib/DateHelper';
+    import { getDiff, timeFormatter } from '$lib/DateTimeHelper';
 
     import Notice from '../Components/Notice.svelte';
     import Panel from '../Components/Panel.svelte';
@@ -53,13 +53,11 @@
                         followerList.push({
                             username: data.username,
                             avatarUrl: image_url,
-                            last_well:
-                                now.diff(DateTime.fromISO(data.last_well), 'hours').toObject()
-                                    .hours || 9999,
+                            last_well: getDiff(data.last_well).hours || 9999,
                             is_well: data.is_well,
                             status: data.status_text,
-                            string_good: data.string_good,
-                            string_bad: data.string_bad
+                            string_good: data.string_good || "I'm doing good!",
+                            string_bad: data.string_bad || "I'm feeling bad..."
                         });
 
                         followerList = followerList
@@ -126,7 +124,7 @@
                         <span>
                             <h3>{user.username}</h3>
                             {#if user.last_well !== undefined}
-                                <p><i>{timeFormatter(user.last_well)}</i></p>
+                                <p><i>{timeFormatter(user.last_well)} ago</i></p>
                             {/if}
                         </span>
                     </span>

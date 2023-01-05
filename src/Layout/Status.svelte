@@ -1,12 +1,12 @@
 <script lang="ts">
     import { supabase } from '$lib/supabaseClient';
-    import type { AuthSession } from '@supabase/supabase-js';
     import { onMount } from 'svelte';
     import { DateTime } from 'luxon';
 
     import Loading from './Loading.svelte';
     import Notice from '../Components/Notice.svelte';
     import { page } from '$app/stores';
+    import { getDiff, timeFormatter } from '$lib/DateTimeHelper';
 
     const { user } = $page.data.session;
 
@@ -20,10 +20,10 @@
 
     let is_well: boolean | null = false;
     let last_well: string;
-    let last_hour: number | undefined;
     let has_created: boolean | null = true;
 
-    let now = DateTime.now();
+    let last_hour: number | undefined;
+    let last_day: number | undefined;
 
     onMount(() => {
         getStatus();
@@ -51,7 +51,10 @@
                 has_created = data.has_created;
             }
 
-            last_hour = now.diff(DateTime.fromISO(last_well), 'hours').toObject().hours;
+            last_hour = getDiff(last_well).hours;
+            last_day = getDiff(last_well).days;
+
+            console.log(getDiff(last_well));
 
             if (string_good?.length === 0) string_good = "I'm doing good!";
             if (string_bad?.length === 0) string_bad = "I'm feeling bad...";
@@ -68,15 +71,13 @@
         try {
             loading = true;
 
-            let day: Date;
+            let day: string;
 
-            if (last_well == null || is_well !== is_well) {
-                day = new Date();
+            if (last_day == null || last_day > 0) {
+                day = DateTime.now().toISO();
             } else {
-                day = new Date(last_well);
+                day = last_well;
             }
-
-            console.log(day);
 
             const updates = {
                 id: user.id,
@@ -105,13 +106,6 @@
 
 {#if loading}
     <Loading />
-{:else if username === 'UNREGISTERED'}
-    <h2>Your username is not allowed!</h2>
-    <p>The username you are using is not allowed in YouOkay.</p>
-    <p>
-        If you haven't set your username yet, please do so in the
-        <a href="/profile">edit profile page</a>!
-    </p>
 {:else}
     {#if has_created}
         <Notice
@@ -126,7 +120,7 @@
     <h1>Update your status</h1>
 
     <form method="post" on:submit|preventDefault={updateStatus}>
-        {#if last_hour === undefined || last_hour > 24}
+        {#if last_day === undefined || last_day > 0}
             <span>
                 <p>How are you feeling today?</p>
                 <input
@@ -152,7 +146,11 @@
             </span>
         {:else}
             <span>
-                <p>Come back in {24 - (last_hour | 0)} hours to update your today's wellbeing!</p>
+                {#if last_hour !== undefined}
+                    <p>
+                        Come back in {timeFormatter(24 - last_hour)} to update your today's wellbeing!
+                    </p>
+                {/if}
             </span>
         {/if}
 

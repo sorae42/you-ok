@@ -61,6 +61,7 @@ i.header {
 .fake-button,
 button,
 input[type='submit'] {
+    appearance: none;
     width: 100%;
     background-color: transparent;
     border: 2px solid #adadad;

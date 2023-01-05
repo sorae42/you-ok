@@ -4,6 +4,7 @@
     import { supabase } from '$lib/supabaseClient';
     import { goto } from '$app/navigation';
     import { fade } from 'svelte/transition';
+    import { DateTime } from 'luxon';
 
     import Loading from './Loading.svelte';
     import Notice from '../Components/Notice.svelte';
@@ -91,7 +92,7 @@
                 string_good,
                 has_created: false,
                 avatar_url: avatarUrl,
-                updated_at: new Date()
+                updated_at: DateTime.now()
             };
 
             let { error } = await supabase.from('profiles').upsert(updates);

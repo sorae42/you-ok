@@ -1,0 +1,28 @@
+import { DateTime } from "luxon";
+
+export function timeFormatter(hours: number) {
+    let output: string;
+
+    switch(true) {
+        case (hours >= 24):
+            output = Math.floor((hours) / 24) + "d";
+            break;
+        case (hours >= 1):
+            output = Math.floor(hours) + "h";
+            break;
+        case (hours >= 0.1):
+            output = Math.floor((hours * 60)) + "m";
+            break;
+        default:
+            output = "<1m";
+    }
+
+    return output;
+}
+
+export function getDiff(time: string) {
+    const now = DateTime.now();
+    const toDiff = DateTime.fromISO(time);
+
+    return now.diff(toDiff, ['day', 'hours']).toObject() || 0;
+}
