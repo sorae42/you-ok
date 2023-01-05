@@ -53,17 +53,18 @@
                         followerList.push({
                             username: data.username,
                             avatarUrl: image_url,
-                            last_well: now
-                                .diff(DateTime.fromISO(data.last_well), 'hours')
-                                .toObject().hours,
+                            last_well:
+                                now.diff(DateTime.fromISO(data.last_well), 'hours').toObject()
+                                    .hours || 9999,
                             is_well: data.is_well,
                             status: data.status_text,
                             string_good: data.string_good,
                             string_bad: data.string_bad
                         });
 
-                        // this is very wild i don't know why
-                        followerList = followerList;
+                        followerList = followerList
+                            .filter((item): item is user => !!item)
+                            .sort((a, b) => (a.last_well! < b.last_well! ? -1 : 1));
                     }
                 });
             }
@@ -112,7 +113,6 @@
         <Panel>
             <a href="/profile/{user.username}">
                 <div class="user">
-
                     <!-- Header of the status -->
                     <span class="title">
                         {#if user.avatarUrl}
