@@ -21,12 +21,23 @@
 <nav>
     {#if $page.data.session}
         <span>
-            <a href="/">Update Status</a>
-            <a href="/buddy">Buddy list</a>
-            <a href="/profile">Edit Profile</a>
+            <a href="/">
+                <span>Update Status</span>
+                <i class="fas fa-fw fa-pen-to-square" />
+            </a>
+            <a href="/feed">
+                <span>Feed</span>
+                <i class="fas fa-fw fa-message" />
+            </a>
+            <a href="/profile">
+                <span>Edit Profile</span>
+                <i class="fas fa-fw fa-user-pen" />
+            </a>
         </span>
     {:else}
-        <span><a href="/"><strong>YouOkay</strong></a></span>
+        <span>
+            <img src="$lib/assets/icon.svg" alt="YouOkay">
+        </span>
     {/if}
 </nav>
 
@@ -43,7 +54,7 @@
         </p>
     </span>
     <span>
-        <p>YouOkay is still in the alpha development.</p>
+        <p>YouOkay is in beta.</p>
     </span>
 </footer>
 
@@ -58,28 +69,46 @@
         justify-content: space-around;
         background-color: #424242;
         width: 100vw;
-        height: 42px;
+        height: 50px;
 
         span {
             display: flex;
             align-items: center;
+            justify-content: center;
             height: 100%;
-            
+
+            img {
+                width: 48px;
+                height: auto;
+            }
+
             a {
                 display: flex;
+                flex-direction: column;
                 align-items: center;
+                justify-content: space-evenly;
+                width: 60px;
                 height: inherit;
-                padding: 0 12px;
+                margin: 0 6px;
                 color: white;
                 text-decoration: none;
-    
+
+                i {
+                    font-size: 24px;
+                }
+
+                span {
+                    font-size: 8px;
+                    height: fit-content;
+                    white-space: nowrap;
+                }
+
                 &:hover {
                     background-color: white;
                     color: black;
                 }
             }
         }
-        
     }
 
     footer {
@@ -94,6 +123,10 @@
             flex-direction: row;
             align-items: center;
             justify-content: space-around;
+
+            @media screen and (max-width: 768px) {
+                flex-direction: column;
+            }
         }
     }
 </style>

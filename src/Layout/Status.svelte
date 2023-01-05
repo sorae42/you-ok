@@ -8,8 +8,6 @@
     import Notice from '../Components/Notice.svelte';
     import { page } from '$app/stores';
 
-    export let session: AuthSession;
-
     const { user } = $page.data.session;
 
     let loading = false;
@@ -124,7 +122,9 @@
             textColor={true}
         />
     {/if}
+
     <h1>Update your status</h1>
+
     <form method="post" on:submit|preventDefault={updateStatus}>
         {#if last_hour === undefined || last_hour > 24}
             <span>
@@ -150,7 +150,12 @@
                 />
                 <label for="bad">{string_bad}</label>
             </span>
+        {:else}
+            <span>
+                <p>Come back in {24 - (last_hour | 0)} hours to update your today's wellbeing!</p>
+            </span>
         {/if}
+
         <span>
             <label for="long-stat">Status (limit to 200 characters)</label>
             <input
@@ -162,10 +167,7 @@
                 bind:value={status_text}
             />
         </span>
-        <p>
-            Once you updated your status, you cannot change how you are feeling within 24 hours.
-            However, you can still change the status at will.
-        </p>
+
         <input type="submit" value="Update my status" />
         <a href="/profile/{username}"><button>View my profile</button></a>
     </form>

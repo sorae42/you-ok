@@ -3,11 +3,12 @@
     import type { AuthSession } from '@supabase/supabase-js';
     import { supabase } from '$lib/supabaseClient';
     import { goto } from '$app/navigation';
+    import { fade } from 'svelte/transition';
 
     import Loading from './Loading.svelte';
     import Notice from '../Components/Notice.svelte';
-    import { fade } from 'svelte/transition';
     import Avatar from './Avatar.svelte';
+    import Panel from '../Components/Panel.svelte';
 
     export let session: AuthSession;
 
@@ -20,7 +21,6 @@
     let avatarUrl: string;
     let username: string | null = null;
     let pronoun: string | null = null;
-    let private_profile: boolean | null = true;
 
     // connections
     let website: string | undefined;
@@ -52,7 +52,6 @@
                 avatarUrl = data.avatar_url;
                 username = data.username;
                 pronoun = data.pronoun;
-                private_profile = data.private_profile;
 
                 string_good = data.string_good;
                 string_bad = data.string_bad;
@@ -91,7 +90,6 @@
                 string_bad,
                 string_good,
                 has_created: false,
-                private_profile,
                 avatar_url: avatarUrl,
                 updated_at: new Date()
             };
@@ -139,59 +137,55 @@
 <h1>Edit Profile</h1>
 
 <form class="form-widget" on:submit|preventDefault={updateProfile}>
-    <h2><i class="fa-solid fa-user" /> Profile</h2>
-    
-    <Avatar bind:url={avatarUrl} on:upload={updateProfile} />
+    <Panel>
+        <i class="fa-solid fa-user header" />
+        <h2>Profile</h2>
 
-    <label for="username">Username</label>
-    <input id="username" type="text" bind:value={username} required />
+        <Avatar bind:url={avatarUrl} on:upload={updateProfile} />
 
-    <span>
-        <input id="private" type="checkbox" bind:checked={private_profile} />
-        <label for="private">Make profile private</label>
-        <p>
-            This will make your profile completely invisible and only your buddies can see your
-            profile.
-            <br />
-        </p>
-    </span>
+        <label for="username">Username</label>
+        <input id="username" type="text" bind:value={username} required />
 
-    {#if private_profile}
-        <Notice
-            icon="triangle-exclamation"
-            title="Please note!"
-            content="No one will be able to view your profile as for now. Please wait patiently for the buddy system to be implemented."
+        <label for="pronoun">Pronouns</label>
+        <input id="pronoun" type="text" bind:value={pronoun} />
+
+        <hr />
+
+        <h3>Connections</h3>
+        <label for="website"><i class="fa-brands fa-discord" /> Discord</label>
+        <input id="website" type="website" bind:value={discord} placeholder="username#1234" />
+        <label for="website"><i class="fa-brands fa-twitter" /> Twitter</label>
+        <input id="website" type="website" bind:value={twitter} placeholder="@twitter.handle" />
+        <label for="website"><i class="fa-brands fa-github" /> GitHub</label>
+        <input id="website" type="website" bind:value={github} placeholder="github_username" />
+        <label for="website"><i class="fa-solid fa-globe" /> Website</label>
+        <input
+            id="website"
+            type="website"
+            bind:value={website}
+            placeholder="https://yourwebsite.com"
         />
-    {/if}
+    </Panel>
 
-    <label for="pronoun">Pronouns</label>
-    <input id="pronoun" type="text" bind:value={pronoun} />
+    <Panel>
+        <i class="fa-solid fa-wrench header" />
+        <h2>Customization</h2>
 
-    <h3>Connections</h3>
-    <label for="website"><i class="fa-brands fa-discord" /> Discord</label>
-    <input id="website" type="website" bind:value={discord} placeholder="username#1234" />
-    <label for="website"><i class="fa-brands fa-twitter" /> Twitter</label>
-    <input id="website" type="website" bind:value={twitter} placeholder="@twitter.handle" />
-    <label for="website"><i class="fa-brands fa-github" /> GitHub</label>
-    <input id="website" type="website" bind:value={github} placeholder="github_username" />
-    <label for="website"><i class="fa-solid fa-globe" /> Website</label>
-    <input id="website" type="website" bind:value={website} placeholder="https://yourwebsite.com" />
-    <hr />
+        <h3>Status</h3>
+        <p>Customize the "feeling well" status:</p>
+        <label for="good">Good</label>
+        <input type="text" id="good" bind:value={string_good} placeholder="I'm doing well" />
+        <label for="bad">Bad</label>
+        <input type="text" id="bad" bind:value={string_bad} placeholder="I'm feeling bad..." />
+        <p>These customized prompt will be tied to your account.</p>
+    </Panel>
 
-    <h2><i class="fa-solid fa-wrench" /> Customization</h2>
-    <h3>Status</h3>
-    <p>Customize the "feeling well" status:</p>
-    <label for="good">Good</label>
-    <input type="text" id="good" bind:value={string_good} placeholder="I'm doing well" />
-    <label for="bad">Bad</label>
-    <input type="text" id="bad" bind:value={string_bad} placeholder="I'm feeling bad..." />
-    <p>These customized prompt will be tied to your account.</p>
-    <hr />
-
-    <h2><i class="fa fa-id-card" /> Account</h2>
-    <label for="email">Email</label>
-    <input id="email" type="text" value={session.user.email} disabled />
-    <hr />
+    <Panel>
+        <i class="fa fa-id-card header" /> 
+        <h2>Account</h2>
+        <label for="email">Email</label>
+        <input id="email" type="text" value={session.user.email} disabled />
+    </Panel>
 
     <h3>Update profile?</h3>
     <input
@@ -211,11 +205,8 @@
     {/if}
 
     <h3>View your profile?</h3>
-    <a href="/profile/{username}"><button>View my profile</button></a>
+    <a href="/profile/{username}"><button disabled={loading}>View my profile</button></a>
 
     <h3>Sign out of account?</h3>
     <button on:click={signOut} disabled={loading}>Sign Out <i class="fa fa-sign-out" /></button>
 </form>
-
-<style lang="scss">
-</style>

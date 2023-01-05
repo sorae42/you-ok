@@ -4,7 +4,7 @@
 
     export let url: string;
 
-    let avatarUrl: string | null = null;
+    let avatarUrl: string;
     let uploading = false;
     let files: FileList;
 
@@ -39,11 +39,9 @@
             const fileExt = file.name.split('.').pop();
             const filePath = `${Math.random()}.${fileExt}`;
 
-            let { error } = await supabase.storage.from('avatars').upload(filePath, file);
-
-            if (error) {
-                throw error;
-            }
+            await supabase.storage.from('avatars').remove([avatarUrl]).then(() => {
+                supabase.storage.from('avatars').upload(filePath, file);
+            })
 
             url = filePath;
             dispatch('upload');

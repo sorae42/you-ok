@@ -35,10 +35,8 @@
         loading = true;
         getProfileData().then(() => {
             downloadImage(avatarUrl);
-            getBuddyData().then(() => {
-                getBuddyRequest().then(() => {
-                    loading = false;
-                });
+            getFollowingData().then(() => {
+                loading = false;
             });
         });
     });
@@ -65,7 +63,7 @@
             const { data, error, status } = await supabase
                 .from('profiles')
                 .select(
-                    `avatar_url, id, pronoun, is_well, last_well, status_text, string_good, string_bad, private_profile, website, github, twitter, discord`
+                    `avatar_url, id, pronoun, is_well, last_well, status_text, string_good, string_bad, website, github, twitter, discord`
                 )
                 .eq('username', username)
                 .single();
@@ -105,131 +103,57 @@
         }
     };
 
-    let buddyId: string | null = '';
-    let isBuddy: boolean | null = false;
-    let isMutual: boolean | null = false;
-    let buddyButton: string | null = 'Add Buddy';
-    let buddyIcon: string | null = 'user-plus';
-    $: buddyStatus = 0;
+    let isFollowing: boolean | null = false;
+    let followId: string | null = '';
 
-    const getBuddyData = async () => {
+    const getFollowingData = async () => {
         try {
             const { data, error, status } = await supabase
-                .from('buddylist')
-                .select('id, is_mutual')
-                .eq('me', user.id)
-                .eq('you', profile_id)
+                .from('followers')
+                .select('id')
+                .eq('follower', user.id)
+                .eq('following', profile_id)
                 .single();
 
-            if (data) {
-                buddyId = data.id;
-                buddyButton = 'Cancel request';
-                buddyIcon = 'user-minus';
-                buddyStatus = 1;
-
-                if (data.is_mutual) {
-                    buddyButton = 'Remove Buddy';
-                    buddyIcon = 'user-xmark';
-                    buddyStatus = 2;
-                }
+            if (status === 406) {
+                isFollowing = false;
             }
 
-            if (error && status !== 406) throw error;
-        } catch (error) {
-            if (error instanceof Error) alert(error);
-        }
-    };
-
-    const getBuddyRequest = async () => {
-        try {
-            const { data, error, status } = await supabase
-                .from('buddylist')
-                .select('id, is_mutual')
-                .eq('me', profile_id)
-                .eq('you', user.id)
-                .single();
-
             if (data) {
-                if (!data.is_mutual) {
-                    buddyId = data.id;
-                    buddyButton = 'Accept request';
-                    buddyIcon = 'user-check';
-                    buddyStatus = 3;
-                }
+                isFollowing = true;
+                followId = data.id;
             }
 
-            if (error && status !== 406) throw error;
+            if (error && status !== 406) {
+                throw error;
+            }
         } catch (error) {
             if (error instanceof Error) alert(error);
         }
     };
 
-    const addBuddy = async () => {
-        try {
-            loading = true;
-
-            const buddy = {
-                me: user.id,
-                you: profile_id
-            };
-
-            let { error } = await supabase.from('buddylist').upsert(buddy);
-
-            buddyStatus = 1;
-
-            if (error) throw error;
-        } catch (error) {
-            if (error instanceof Error) alert(error);
-        } finally {
-            loading = false;
+    async function followButtonAction() {
+        loading = true;
+        if (!isFollowing) {
+            await supabase
+                .from('followers')
+                .insert({
+                    follower: user.id,
+                    following: profile_id
+                })
+                .then(() => {
+                    getFollowingData();
+                });
+        } else {
+            await supabase
+                .from('followers')
+                .delete()
+                .eq('id', followId)
+                .then(() => {
+                    getFollowingData();
+                });
         }
-    };
-
-    const acceptBuddy = async () => {
-        try {
-            loading = true;
-
-            let { error } = await supabase
-                .from('buddylist')
-                .update({ is_mutual: true })
-                .eq('id', buddyId);
-
-            buddyStatus = 2;
-
-            if (error) throw error;
-        } catch (error) {
-            if (error instanceof Error) alert(error);
-        } finally {
-            loading = false;
-        }
-    };
-
-    const removeBuddy = async () => {
-        try {
-            loading = true;
-
-            const { error } = await supabase.from('buddylist').delete().eq('id', buddyId);
-
-            if (error) throw error;
-        } catch (error) {
-            if (error instanceof Error) alert(error);
-        } finally {
-            loading = false;
-        }
-    };
-
-    function buddyAction() {
-        switch (buddyStatus) {
-            case 0:
-                addBuddy();
-                break;
-            case 1:
-            case 2:
-                removeBuddy();
-                break;
-            case 3:
-                acceptBuddy();
-        }
+        loading = false;
     }
 </script>
 
@@ -240,15 +164,6 @@
 {#if loading}
     <Loading />
 {:else}
-    {#if false}
-        <Notice
-            icon="user-group"
-            title={username + ' is on YouOkay.'}
-            content="Sign in to add this person as buddy."
-            color="grey"
-            textColor={true}
-        />
-    {/if}
     <div id="profile">
         <div id="intro">
             {#if avatarUrl}
@@ -260,12 +175,10 @@
                 <h2>{username}</h2>
                 <p>({pronoun || 'pronoun not specified'})</p>
             </span>
-            {#if false && $page.data.session && user.id !== profile_id}
-                <!-- on:click={buddyAction} -->
-                <button disabled
-                    ><i class="fa-solid fa-fw fa-{buddyIcon}" /><strong>{buddyButton}</strong
-                    ></button
-                >
+            {#if $page.data.session && user.id !== profile_id}
+                <button on:click={followButtonAction}>
+                    <strong>{isFollowing ? 'Following' : 'Follow'}</strong>
+                </button>
             {/if}
         </div>
 
