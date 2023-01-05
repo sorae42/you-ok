@@ -1,5 +1,5 @@
 <svelte:head>
-    <title>Page not found!</title>
+    <title>Profile not found!</title>
 </svelte:head>
 
 <div id="main">

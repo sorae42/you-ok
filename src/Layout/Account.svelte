@@ -5,8 +5,9 @@
     import { goto } from '$app/navigation';
 
     import Loading from './Loading.svelte';
-    import Notice from './Notice.svelte';
+    import Notice from '../Components/Notice.svelte';
     import { fade } from 'svelte/transition';
+    import Avatar from './Avatar.svelte';
 
     export let session: AuthSession;
 
@@ -16,6 +17,7 @@
     let notice = false;
 
     // profile
+    let avatarUrl: string;
     let username: string | null = null;
     let pronoun: string | null = null;
     let private_profile: boolean | null = true;
@@ -41,12 +43,13 @@
             const { data, error, status } = await supabase
                 .from('profiles')
                 .select(
-                    `username, website, private_profile, discord, twitter, github, string_good, string_bad, pronoun`
+                    `avatar_url, username, website, private_profile, discord, twitter, github, string_good, string_bad, pronoun`
                 )
                 .eq('id', user.id)
                 .single();
 
             if (data) {
+                avatarUrl = data.avatar_url;
                 username = data.username;
                 pronoun = data.pronoun;
                 private_profile = data.private_profile;
@@ -89,6 +92,7 @@
                 string_good,
                 has_created: false,
                 private_profile,
+                avatar_url: avatarUrl,
                 updated_at: new Date()
             };
 
@@ -133,8 +137,12 @@
 {/if}
 
 <h1>Edit Profile</h1>
+
 <form class="form-widget" on:submit|preventDefault={updateProfile}>
     <h2><i class="fa-solid fa-user" /> Profile</h2>
+    
+    <Avatar bind:url={avatarUrl} on:upload={updateProfile} />
+
     <label for="username">Username</label>
     <input id="username" type="text" bind:value={username} required />
 
@@ -186,7 +194,11 @@
     <hr />
 
     <h3>Update profile?</h3>
-    <input type="submit" value={loading ? 'Please wait warmly!' : 'Update profile'} disabled={loading} />
+    <input
+        type="submit"
+        value={loading ? 'Please wait warmly!' : 'Update profile'}
+        disabled={loading}
+    />
     {#if notice}
         <span out:fade>
             <Notice

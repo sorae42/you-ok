@@ -5,7 +5,7 @@
     import { DateTime } from 'luxon';
 
     import Loading from './Loading.svelte';
-    import Notice from './Notice.svelte';
+    import Notice from '../Components/Notice.svelte';
     import { page } from '$app/stores';
 
     export let session: AuthSession;
@@ -34,7 +34,6 @@
     const getStatus = async () => {
         try {
             loading = true;
-            const { user } = session;
 
             const { data, error, status } = await supabase
                 .from('profiles')
