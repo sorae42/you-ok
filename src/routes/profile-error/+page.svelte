@@ -15,9 +15,5 @@
         justify-content: center;
         align-items: center;
         flex-direction: column;
-
-        &#main {
-            width: 100vw;
-        }
     }
 </style>

@@ -70,7 +70,7 @@
             {uploading ? 'Please wait warmly!...' : 'Upload avatar'}
         </label>
         <input
-            style="visibility: hidden; position:absolute;"
+            style="display: none; position:absolute;"
             type="file"
             id="single"
             accept="image/*"

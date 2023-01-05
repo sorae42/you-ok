@@ -68,7 +68,6 @@
         align-items: center;
         justify-content: space-around;
         background-color: #424242;
-        width: 100vw;
         height: 50px;
 
         span {
