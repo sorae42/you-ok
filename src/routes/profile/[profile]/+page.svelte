@@ -8,8 +8,9 @@
 </script>
 
 <MetaTags
-    title={username + "'s Profile on YouOkay"}
-    description={"See how " + username + " up these days on YouOkay."}
+    title={username}
+    titleTemplate="%s's Profile on YouOkay"
+    description={'See how ' + username + ' up to these days on YouOkay.'}
     robotsProps={{
         noarchive: true,
         nosnippet: true,
@@ -20,4 +21,4 @@
     }}
 />
 
-<Profile username={username} />
+<Profile {username} />
