@@ -7,9 +7,8 @@
     import { error as routeError } from '@sveltejs/kit';
     import { goto } from '$app/navigation';
     import { page } from '$app/stores';
-    import Notice from '../Components/Notice.svelte';
 
-    const { user } = $page.data.session;
+    const { user } = $page.data.session  || { user: null };
 
     let loading = false;
 
@@ -34,8 +33,10 @@
     onMount(async () => {
         loading = true;
         getProfileData().then(() => {
-            downloadImage(avatarUrl);
-            getFollowingData().then(() => {
+            if (user !== null) {
+                getFollowingData();
+            } 
+            downloadImage(avatarUrl).then(() => {
                 loading = false;
             });
         });

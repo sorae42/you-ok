@@ -6,7 +6,6 @@
     import Loading from './Loading.svelte';
     import Notice from '../Components/Notice.svelte';
     import { page } from '$app/stores';
-    import { getDiff, timeFormatter } from '$lib/DateTimeHelper';
     import { fade } from 'svelte/transition';
 
     const { user } = $page.data.session;
