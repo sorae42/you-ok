@@ -26,6 +26,7 @@
         "sass": "^1.53.0",
         "svelte": "^3.54.0",
         "svelte-check": "^2.9.2",
+        "svelte-meta-tags": "^2.6.4",
         "svelte-preprocess": "^4.10.7",
         "svelte-preprocess-import-assets": "^0.2.5",
         "tslib": "^2.4.1",

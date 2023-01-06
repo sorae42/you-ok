@@ -1,6 +1,6 @@
 <script lang="ts">
-    import Account from "../../Layout/Account.svelte";
+    import ProfileEditor from "../../Layout/ProfileEdit.svelte";
     import { page } from '$app/stores';
 </script>
 
-<Account session={$page.data.session} />
+<ProfileEditor session={$page.data.session} />

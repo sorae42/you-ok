@@ -7,7 +7,7 @@
 
     import Notice from '../Components/Notice.svelte';
     import Panel from '../Components/Panel.svelte';
-    import Loading from './Loading.svelte';
+    import Loading from '../Components/Loading.svelte';
 
     const { user } = $page.data.session;
 
@@ -53,7 +53,7 @@
                         followerList.push({
                             username: data.username,
                             avatarUrl: image_url,
-                            last_well: getDiff(data.last_well, 'hours').hours || 9999,
+                            last_well: getDiff(data.last_well, 'hours').hours,
                             is_well: data.is_well,
                             status: data.status_text,
                             string_good: data.string_good || "I'm doing good!",
@@ -98,79 +98,56 @@
     <Loading />
 {/if}
 
-<h1>Status Feed</h1>
-
-<Notice
-    icon="triangle-exclamation"
-    title="Please note!"
-    content="Status feed is currently in beta. If there any bugs, please report them to me."
-/>
-
 <div id="follow-list">
     {#each followerList as user}
-        <Panel>
-            <a href="/profile/{user.username}">
-                <div class="user">
-                    <!-- Header of the status -->
-                    <span class="title">
-                        {#if user.avatarUrl}
-                            <img
-                                src={user.avatarUrl}
-                                alt={user.avatarUrl ? 'Avatar' : 'No image'}
-                            />
-                        {:else}
-                            <img src="$lib/assets/default.png" alt="" />
-                        {/if}
+        {#if user.last_well !== undefined}
+            <Panel>
+                <a href="/profile/{user.username}">
+                    <div class="user">
+
+                        <!-- Header of the status -->
+                        <span class="title">
+                            {#if user.avatarUrl}
+                                <img
+                                    src={user.avatarUrl}
+                                    alt={user.avatarUrl ? 'Avatar' : 'No image'}
+                                />
+                            {:else}
+                                <img src="$lib/assets/default.png" alt="" />
+                            {/if}
+                            <span>
+                                <p><strong>{user.username}</strong></p>
+                                {#if user.last_well !== undefined}
+                                    <p><i>{timeFormatter(user.last_well)} ago</i></p>
+                                {/if}
+                            </span>
+                        </span>
+
+                        <!-- Body of the status-->
                         <span>
-                            <h3>{user.username}</h3>
-                            {#if user.last_well !== undefined}
-                                <p><i>{timeFormatter(user.last_well)} ago</i></p>
+                            <p>
+                                <strong>Status:</strong>
+                                {user.is_well ? user.string_good : user.string_bad}
+                            </p>
+                            {#if user.status}
+                                <p>"{user.status}"</p>
                             {/if}
                         </span>
-                    </span>
-
-                    <!-- Body of the status-->
-                    <span>
-                        {#if user.last_well !== undefined}
-                            {#if user.last_well > 24}
-                                <p>
-                                    <i>
-                                        {user.username} has not updated their status for the past 24
-                                        hours.
-                                    </i>
-                                    <br />
-                                </p>
-                            {:else}
-                                <p>
-                                    <strong>Status:</strong>
-                                    {user.is_well ? user.string_good : user.string_bad}
-                                </p>
-                                {#if user.status}
-                                    <p>"{user.status}"</p>
-                                {/if}
-                            {/if}
-                        {:else}
-                            <p>
-                                <i>
-                                    This user has just created their account and have not updated
-                                    their status yet.
-                                </i>
-                            </p>
-                        {/if}
-                    </span>
-
-                    <!---->
-                </div>
-            </a>
-        </Panel>
+                    </div>
+                </a>
+            </Panel>
+        {/if}
     {/each}
 </div>
 
-{#if followerList.length > 0}
-    <p><strong>No more status to show.</strong></p>
-{:else}
-    <p><i>It's empty here...</i></p>
-{/if}
+<i>
+    {#if followerList.length > 0}
+        <p>No more status to show.</p>
+    {:else}
+        <p>It's empty here... Why don't you go follow some of your friend?</p>
+        <p>They don't have YouOkay account? Spread the word to them!</p>
+    {/if}
+</i>
 
 <style lang="scss">
     a {
@@ -192,11 +169,16 @@
                 display: flex;
                 align-items: center;
                 justify-content: left;
+                
+                p {
+                    margin: 0 5px;
+                }
             }
+
         }
 
         img {
-            width: 4em;
+            width: 3em;
             border: 1px solid white;
             margin: 8px;
         }

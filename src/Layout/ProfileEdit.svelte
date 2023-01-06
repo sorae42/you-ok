@@ -6,9 +6,9 @@
     import { fade } from 'svelte/transition';
     import { DateTime } from 'luxon';
 
-    import Loading from './Loading.svelte';
+    import Loading from '../Components/Loading.svelte';
     import Notice from '../Components/Notice.svelte';
-    import Avatar from './Avatar.svelte';
+    import Avatar from '../Components/Avatar.svelte';
     import Panel from '../Components/Panel.svelte';
 
     export let session: AuthSession;

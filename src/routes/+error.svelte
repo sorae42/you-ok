@@ -1,21 +1,12 @@
+<script>
+    import { page } from '$app/stores';
+</script>
+
 <svelte:head>
-    <title>Page not found!</title>
+    <title>{$page.error?.message}! - YouOkay</title>
 </svelte:head>
 
-<div id="main">
+<div>
     <h1>Oops!</h1>
-    <p>Something just happened! Check back later!</p>
+    <p>{$page.error?.message}</p>
 </div>
-
-<style lang="scss">
-    div {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-
-        &#main {
-            width: 100vw;
-        }
-    }
-</style>

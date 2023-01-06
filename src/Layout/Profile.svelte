@@ -2,13 +2,14 @@
     import { supabase } from '$lib/supabaseClient';
     import { onMount } from 'svelte';
     import { DateTime } from 'luxon';
-
-    import Loading from './Loading.svelte';
-    import { error as routeError } from '@sveltejs/kit';
     import { goto } from '$app/navigation';
     import { page } from '$app/stores';
 
-    const { user } = $page.data.session  || { user: null };
+    import Loading from '../Components/Loading.svelte';
+    import Panel from '../Components/Panel.svelte';
+    import { getDiff, timeFormatter } from '$lib/DateTimeHelper';
+
+    const { user } = $page.data.session || { user: null };
 
     let loading = false;
 
@@ -24,7 +25,7 @@
     let string_bad: string | null = "I'm feeling bad...";
 
     let is_well: boolean | null = false;
-    let last_well: string;
+    let last_well: number | undefined;
 
     let now = DateTime.now();
     let last_hour: number | undefined;
@@ -35,7 +36,7 @@
         getProfileData().then(() => {
             if (user !== null) {
                 getFollowingData();
-            } 
+            }
             downloadImage(avatarUrl).then(() => {
                 loading = false;
             });
@@ -59,6 +60,7 @@
         }
     };
 
+    // move this to +page.ts
     const getProfileData = async () => {
         try {
             const { data, error, status } = await supabase
@@ -85,18 +87,15 @@
                 status_text = data.status_text;
 
                 is_well = data.is_well;
-                last_well = data.last_well;
+                last_well = getDiff(data.last_well, 'hours').hours;
                 profile_id = data.id;
             }
-
-            last_hour = now.diff(DateTime.fromISO(last_well), 'hours').toObject().hours;
 
             if (string_good?.length === 0) string_good = "I'm doing good!";
             if (string_bad?.length === 0) string_bad = "I'm feeling bad...";
 
             if (status === 406) {
                 goto('/profile-error');
-                throw routeError(404, 'Not Found');
             }
             if (error && status !== 406) throw error;
         } catch (error) {
@@ -205,17 +204,16 @@
     </div>
 
     <div id="status">
-        {#if last_hour === undefined}
+        {#if last_well === undefined}
             <h3>{username} has just created this account and haven't updated their status yet.</h3>
-        {:else if last_hour < 25}
-            <h2>{username}'s today status:</h2>
+        {:else}
             <h1>{is_well ? string_good : string_bad}</h1>
             {#if status_text !== null}
-                <blockquote>Message: {status_text}</blockquote>
+                <blockquote>"{status_text}"</blockquote>
             {/if}
-        {:else}
-            <h3>{username} has not updated their status for the past 24 hours.</h3>
-            <p>Their last status was "{is_well ? string_good : string_bad}"</p>
+            {#if last_well !== undefined}
+                <p><i>Last updated: {timeFormatter(last_well)} ago</i></p>
+            {/if}
         {/if}
     </div>
 {/if}
@@ -278,7 +276,6 @@
     }
 
     div#status {
-        width: 25em;
         text-align: center;
     }
 </style>

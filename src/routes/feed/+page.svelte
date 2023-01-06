@@ -1,5 +1,5 @@
 <script lang="ts">
-    import Feed from '../../Layout/Status_Feed.svelte';
+    import Feed from '../../Layout/Feed.svelte';
 </script>
 
 <Feed />

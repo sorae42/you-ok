@@ -54,7 +54,12 @@
         </p>
     </span>
     <span>
-        <p>YouOkay is in beta.</p>
+        <p>YouOkay is a free service and will forever be. Support me by spreading the words!</p>
+    </span>
+    <span style="opacity: 60%">
+        <p>
+            <a href="mailto:bonniefoxy2009@gmail.com">Send Feedback</a>
+        </p>
     </span>
 </footer>
 

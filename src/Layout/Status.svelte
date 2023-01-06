@@ -3,7 +3,7 @@
     import { onMount } from 'svelte';
     import { DateTime } from 'luxon';
 
-    import Loading from './Loading.svelte';
+    import Loading from '../Components/Loading.svelte';
     import Notice from '../Components/Notice.svelte';
     import { page } from '$app/stores';
     import { fade } from 'svelte/transition';
@@ -20,7 +20,6 @@
     let string_bad: string | null = "I'm feeling bad...";
 
     let is_well: boolean | null = false;
-    let last_well: string;
     let has_created: boolean | null = true;
 
     onMount(() => {
@@ -33,9 +32,7 @@
 
             const { data, error, status } = await supabase
                 .from('profiles')
-                .select(
-                    `username, is_well, last_well, status_text, string_good, string_bad, has_created`
-                )
+                .select(`username, is_well, status_text, string_good, string_bad, has_created`)
                 .eq('id', user.id)
                 .single();
 
@@ -45,7 +42,6 @@
                 string_bad = data.string_bad || "I'm feeling bad...";
                 status_text = data.status_text;
                 is_well = data.is_well;
-                last_well = data.last_well;
                 has_created = data.has_created;
             }
 
