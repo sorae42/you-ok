@@ -58,7 +58,7 @@
     </span>
     <span style="opacity: 60%">
         <p>
-            <a href="mailto:bonniefoxy2009@gmail.com">Send Feedback</a>
+            YouOkay is in beta stage. <a href="mailto:bonniefoxy2009@gmail.com">Send Feedback</a>
         </p>
     </span>
 </footer>
