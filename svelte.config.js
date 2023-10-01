@@ -8,11 +8,7 @@ const config = {
     preprocess: [
         importAssets(),
         vitePreprocess(),
-        preprocess({
-            scss: {
-                prependData: '@use "src/variables.scss" as *;'
-            },
-        })
+        preprocess({})
     ],
     kit: {
         adapter: adapter()
