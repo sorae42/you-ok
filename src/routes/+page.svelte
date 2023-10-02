@@ -12,18 +12,14 @@
             authName = 'sign_in';
             authMessage = 'Log in to your account';
             break;
-        case 1:
-            authName = 'sign_up';
-            authMessage = 'Sign up for an account';
-            break;
         case 2:
             authName = 'forgotten_password';
-            authMessage = 'Reset your password';
+            authMessage = 'Login using magic link';
             break;
     }
 </script>
 
-<main class="flex flex-col items-center justify-center gap-12 lg:flex-row">
+<div class="flex h-screen flex-col items-center justify-center gap-12 lg:flex-row">
     <div class="prose prose-invert flex w-screen flex-1 flex-col items-center text-center">
         <img src="$lib/assets/icon.svg" alt="YouOkay icon" class="mb-0" />
         <h2>Let your loved one know that you are fine.</h2>
@@ -62,16 +58,7 @@
         <!-- TODO: Use something better than anchor -->
         {#if authView == 0}
             <a
-                href="#"
-                on:click={() => {
-                    authView = 1;
-                }}
-            >
-                I don't have an account
-            </a>
-            <br />
-            <a
-                href="#"
+                href={'#'}
                 on:click={() => {
                     authView = 2;
                 }}
@@ -81,7 +68,7 @@
         {/if}
         {#if authView > 0}
             <a
-                href="#"
+                href={'#'}
                 on:click={() => {
                     authView = 0;
                 }}
@@ -90,4 +77,4 @@
             </a>
         {/if}
     </div>
-</main>
+</div>

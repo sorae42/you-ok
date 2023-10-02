@@ -1,9 +1,17 @@
 // src/hooks.server.ts
 import { PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY } from '$env/static/public'
 import { createSupabaseServerClient } from '@supabase/auth-helpers-sveltekit'
-import type { Handle } from '@sveltejs/kit'
 
-export const handle: Handle = async ({ event, resolve }) => {
+import type { Handle } from '@sveltejs/kit'
+import { sequence } from '@sveltejs/kit/hooks';
+
+interface Handler {
+    event?: any,
+    resolve?: any
+}
+
+/// type: import('@sveltejs/kit').Handle
+export const handle: Handle = ({ event, resolve }: Handler) => {
     event.locals.supabase = createSupabaseServerClient({
         supabaseUrl: PUBLIC_SUPABASE_URL,
         supabaseKey: PUBLIC_SUPABASE_ANON_KEY,
@@ -21,7 +29,7 @@ export const handle: Handle = async ({ event, resolve }) => {
     }
 
     return resolve(event, {
-        filterSerializedResponseHeaders(name) {
+        filterSerializedResponseHeaders(name: string) {
             return name === 'content-range'
         },
     })
