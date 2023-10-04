@@ -69,12 +69,12 @@
                 </button>
             </li>
             <li>
-                <a href="/feed" on:click={drawerClose}>
+                <a href="/feed" on:click={drawerClose} data-sveltekit-preload-data>
                     <NewspaperSolid /> Feed
                 </a>
             </li>
             <li>
-                <a href="/edit-profile" on:click={drawerClose}>
+                <a href="/edit-profile" on:click={drawerClose} data-sveltekit-preload-data>
                     <UserPenSolid /> Edit Profile
                 </a>
             </li>
@@ -82,7 +82,7 @@
 
         <div>
             <li>
-                <a href="/">
+                <a href="mailto:bonniefoxy2009@gmail.com">
                     <CommentsSolid /> Send Feedback
                 </a>
             </li>

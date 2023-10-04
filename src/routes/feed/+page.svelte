@@ -9,8 +9,21 @@
     let { session, supabase, statusList } = data;
     $: ({ session, supabase, statusList } = data);
 
+    statusList.push({
+        httpStatus: 0,
+        id: 0,
+        username: "YouOkay Announcement",
+        avatarUrl: "",
+        status: true,
+        status_text: "YouOkay is in Beta!",
+        text: "Expect things to be changed over time. If you found any bugs, feel free to send a feedback to the button to your left (open the burger menu to see the button if you are on the phone).",
+        updated_on: "2023-10-04T14:31:32Z"
+    })
 </script>
 
+{#if statusList.length <= 0}
+<p>No status to show.</p>
+{:else}
 <div class="p-2 lg:p-4">
     <Masonry items={statusList} duration={0} let:item minColWidth={420}>
         <div class="card rounded-lg p-4">
@@ -39,3 +52,5 @@
         </div>
     </Masonry>
 </div>
+{/if}
+

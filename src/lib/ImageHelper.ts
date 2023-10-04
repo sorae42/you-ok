@@ -42,6 +42,8 @@ export class ImageHelper {
             const file = files[0];
             const fileExt = file.name.split('.').pop();
             const filePath = `${Math.random()}.${fileExt}`;
+            
+            console.log("uploading!", filePath);
 
             let { error } = await supabase.storage.from(storage).upload(filePath, file);
 
@@ -53,6 +55,7 @@ export class ImageHelper {
             setTimeout(() => {
                 dispatch('upload');
             }, 100);
+            
         } catch (error) {
             if (error instanceof Error) {
                 alert(error.message);

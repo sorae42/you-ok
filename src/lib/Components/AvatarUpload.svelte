@@ -13,6 +13,7 @@
     function uploadAvatar() {
         try {
             uploading = true;
+            console.log("uploadAvatar() called.");
             imageUpload.uploadImage(files, 'avatars');
         } catch (error) {
             if (error instanceof Error) {

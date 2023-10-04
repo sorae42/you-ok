@@ -1,8 +1,9 @@
 import { StatusHelper } from '$lib/StatusHelper';
 import { redirect } from '@sveltejs/kit';
 import type { Status } from '$lib/StatusHelper';
+import type { PageServerLoad } from './$types';
 
-export const load = async ({ locals: { supabase, getSession } }) => {
+export const load: PageServerLoad = async ({ locals: { supabase, getSession } }) => {
     const session = await getSession();
 
     if (!session) {

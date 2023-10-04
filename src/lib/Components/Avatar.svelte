@@ -3,7 +3,7 @@
     import type { SupabaseClient } from '@supabase/supabase-js';
     import { Avatar } from '@skeletonlabs/skeleton';
     import { ImageHelper } from '$lib/ImageHelper';
-    import YouOkayLogo from '$lib/assets/icon.svg'
+    import userImage from '$lib/assets/default.png';
 
     export let supabase: SupabaseClient;
     export let url: string;
@@ -28,7 +28,7 @@
         }
     }
 
-    initials()
+    initials();
 
     $: downloadAvatar();
 </script>
@@ -38,6 +38,6 @@
     rounded="rounded-full"
     border="border-2 border-surface-300-600-token"
     width={size}
-    fallback={YouOkayLogo}
+    fallback={userImage}
     initials={result}
 />

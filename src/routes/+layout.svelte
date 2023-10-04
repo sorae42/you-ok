@@ -12,12 +12,19 @@
         getDrawerStore,
         initializeStores,
         Modal,
-        storePopup
+        storePopup,
+
+        type ToastSettings,
+
+        getToastStore
+
+
     } from '@skeletonlabs/skeleton';
     import { computePosition, autoUpdate, offset, shift, flip, arrow } from '@floating-ui/dom';
 
     import NavigationBar from '$lib/Components/NavigationBar.svelte';
     import BurgerIcon from '$lib/assets/burger.svelte';
+    import { navigating } from '$app/stores';
 
     initializeStores();
 
@@ -45,6 +52,15 @@
     function drawerOpen(): void {
         drawerStore.open({});
     }
+
+    const toastStore = getToastStore();
+    const loadingToast: ToastSettings = {
+        message: "Loading page...",
+        hideDismiss: true
+    }
+    navigating.subscribe(() => {
+        toastStore.trigger(loadingToast);
+    })
 </script>
 
 <svelte:head>
