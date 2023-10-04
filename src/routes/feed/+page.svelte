@@ -7,8 +7,11 @@
 
     export let data: PageData;
 
-    let { session, supabase, statusList } = data;
-    $: ({ session, supabase, statusList } = data);
+    let { session, supabase, streamed } = data;
+    $: ({ session, supabase, streamed } = data);
+
+    let nItems = 7;
+    $: items = [...Array(nItems).keys()];
 
     /*
     statusList.push({
@@ -24,36 +27,49 @@
     */
 </script>
 
-{#await data}
-    <p>Loading feed...</p>
-{:then}     
 <div class="p-2 lg:p-4">
-    <Masonry items={statusList} duration={0} let:item minColWidth={400} animate={false} getId={(item) => item.id}>
-        <div class="card rounded-lg p-4">
-            <div class="flex flex-row">
-                <span class="">
-                    <Avatar {supabase} url={item.avatarUrl} size="w-12" name={item.username} />
-                </span>
-                <div class="mx-2 flex flex-col">
-                    <strong class="">{item.username}</strong>
-                    <span>{getFormattedDiff(item.updated_on)} ago</span>
-                </div>
+    {#await data.streamed.statusList}
+        <!-- TODO: make better placeholder -->
+        <Masonry {items} duration={0} minColWidth={400} animate={false}>
+            <div class="card rounded-lg p-4">
+                <div class="placeholder-circle w-12 animate-pulse"></div>
+                <br />
+                <div class="placeholder animate-pulse" />
             </div>
-            <article>
-                <span class="my-2 flex flex-row gap-2">
-                    {#if item.status}
-                        <FaceSmileBeamSolid />
-                    {:else}
-                        <FaceFrownSolid />
-                    {/if}
-                    <strong>{item.status_text}</strong>
-                </span>
-                <p>
-                    {item.text}
-                </p>
-            </article>
-        </div>
-    </Masonry>
+        </Masonry>
+    {:then statusItems}
+        <Masonry
+            items={statusItems}
+            duration={0}
+            let:item
+            minColWidth={400}
+            animate={false}
+            getId={(item) => item.id}
+        >
+            <div class="card rounded-lg p-4">
+                <div class="flex flex-row">
+                    <span>
+                        <Avatar {supabase} url={item.avatarUrl} size="w-12" name={item.username} />
+                    </span>
+                    <div class="mx-2 flex flex-col">
+                        <strong>{item.username}</strong>
+                        <span>{getFormattedDiff(item.updated_on)} ago</span>
+                    </div>
+                </div>
+                <article>
+                    <span class="my-2 flex flex-row gap-2">
+                        {#if item.status}
+                            <FaceSmileBeamSolid />
+                        {:else}
+                            <FaceFrownSolid />
+                        {/if}
+                        <strong>{item.status_text}</strong>
+                    </span>
+                    <p>
+                        {item.text}
+                    </p>
+                </article>
+            </div>
+        </Masonry>
+    {/await}
 </div>
-{/await}
-

@@ -11,7 +11,12 @@ export const load: PageServerLoad = async ({ locals: { supabase, getSession } })
         throw redirect(303, '/');
     }
 
-    return {session, statusList: fetchFeed(supabase)};
+    return {
+        session,
+        streamed: {
+            statusList: fetchFeed(supabase)
+        }
+    };
 };
 
 async function fetchFeed(supabase: SupabaseClient) {

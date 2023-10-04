@@ -52,15 +52,6 @@
     function drawerOpen(): void {
         drawerStore.open({});
     }
-
-    const toastStore = getToastStore();
-    const loadingToast: ToastSettings = {
-        message: "Loading page...",
-        hideDismiss: true
-    }
-    navigating.subscribe(() => {
-        toastStore.trigger(loadingToast);
-    })
 </script>
 
 <svelte:head>
