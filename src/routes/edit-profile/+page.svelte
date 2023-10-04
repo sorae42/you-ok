@@ -10,6 +10,7 @@
     import { SlideToggle, getToastStore } from '@skeletonlabs/skeleton';
 
     import Avatar from '$lib/Components/Avatar.svelte';
+    import AvatarUpload from '$lib/Components/AvatarUpload.svelte';
 
     const toastStore = getToastStore();
 
@@ -19,8 +20,9 @@
     let { session, supabase, profile } = data;
     $: ({ session, supabase, profile } = data);
 
-    let profileForm: HTMLFormElement;
     let loading = false;
+
+    let profileForm: HTMLFormElement;
     let username: string = profile?.username ?? '';
     let avatarUrl: string = profile?.avatar_url ?? '';
     let privateProfile: boolean = profile?.private_profile ?? '';
@@ -47,24 +49,28 @@
     };
 </script>
 
-<div class="flex flex-col justify-center p-12 lg:flex-row">
-    <div>
-        <Avatar
-            {supabase}
-            bind:url={avatarUrl}
-            on:upload={() => {
-                profileForm.requestSubmit();
-            }}
-        />
-    </div>
-    <div class="w-96 space-y-6">
-        <form
-            method="post"
-            action="?/update"
-            class="space-y-4"
-            use:enhance={handleSubmit}
-            bind:this={profileForm}
-        >
+<form
+    method="post"
+    action="?/update"
+    class="space-y-4"
+    use:enhance={handleSubmit}
+    bind:this={profileForm}
+>
+    <div class="flex flex-col justify-center p-12 lg:flex-row">
+        <div>
+            <Avatar
+                {supabase}
+                bind:url={avatarUrl}
+                on:upload={() => {
+                    profileForm.requestSubmit();
+                }}
+                size="w-64"
+                name={username}
+            />
+            <br />
+            <AvatarUpload {supabase} />
+        </div>
+        <div class="w-96 space-y-6">
             <div class="space-y-4">
                 <h2 class="h2">Basic Infomation</h2>
                 <div>
@@ -87,12 +93,15 @@
                     />
                 </div>
                 <div>
+                    <p>Private Profile is still work in progress. Check back soon!</p>
+                    <!-- TODO: Private profile
                     <SlideToggle
                         name="privateProfile"
                         checked={form?.private_profile ?? privateProfile}
                     >
                         Private Profile
                     </SlideToggle>
+                    -->
                 </div>
             </div>
 
@@ -191,12 +200,12 @@
                     disabled={loading}
                 />
             </div>
-        </form>
 
-        <div>
-            <label for="email" class="label">Email</label>
-            <input id="email" type="text" value={session.user.email} disabled />
-            <p>You cannot change this for the time being.</p>
+            <div>
+                <label for="email" class="label">Email</label>
+                <input id="email" type="text" value={session.user.email} disabled />
+                <p>You cannot change this for the time being.</p>
+            </div>
         </div>
     </div>
-</div>
+</form>

@@ -3,7 +3,7 @@
     import '../app.css';
     import { invalidate } from '$app/navigation';
     import { onMount } from 'svelte';
-    import { slide } from 'svelte/transition';
+    import { fade, fly } from 'svelte/transition';
     import {
         AppBar,
         AppShell,
@@ -11,13 +11,17 @@
         Drawer,
         getDrawerStore,
         initializeStores,
-        Modal
+        Modal,
+        storePopup
     } from '@skeletonlabs/skeleton';
+    import { computePosition, autoUpdate, offset, shift, flip, arrow } from '@floating-ui/dom';
 
     import NavigationBar from '$lib/Components/NavigationBar.svelte';
     import BurgerIcon from '$lib/assets/burger.svelte';
 
     initializeStores();
+
+    storePopup.set({ computePosition, autoUpdate, offset, shift, flip, arrow });
 
     export let data;
 
@@ -50,24 +54,34 @@
 <Toast position="tr" />
 <Modal />
 <Drawer width="w-[280px]">
-    <h2 class="flex flex-row p-4 text-xl">
+    <h2 class="flex flex-row gap-2 p-4 text-xl">
         <img src="$lib/assets/icon.svg" alt="YouOkay icon" class="w-8" />
         <strong>YouOkay</strong>
+        <span class="variant-filled-warning badge">BETA</span>
     </h2>
     <hr />
     <NavigationBar {supabase} />
 </Drawer>
 
-<AppShell scrollbarGutter="auto" slotSidebarLeft="bg-surface-500/5 {classesSidebar}">
+<AppShell
+    scrollbarGutter="auto"
+    slotSidebarLeft="bg-surface-500/5 {classesSidebar}"
+    transitionIn={fly}
+    transitionOut={fly}
+    transitionInParams={{ duration: 420 }}
+>
     <svelte:fragment slot="header">
         {#if session}
             <AppBar>
                 <svelte:fragment slot="lead">
                     <div class="flex items-center">
-                        <button class="!bg-inherit btn btn-sm mr-4 lg:hidden" on:click={drawerOpen}>
+                        <button class="btn btn-sm mr-4 !bg-inherit lg:hidden" on:click={drawerOpen}>
                             <BurgerIcon />
                         </button>
-                        <strong class="text-xl">YouOkay</strong>
+                        <h2 class="flex flex-row gap-2 text-xl">
+                            <img src="$lib/assets/icon.svg" alt="YouOkay icon" class="w-8" />
+                            <span class="variant-filled-warning badge">BETA</span>
+                        </h2>
                     </div>
                 </svelte:fragment>
             </AppBar>
@@ -81,14 +95,4 @@
     <div>
         <slot />
     </div>
-
-    <svelte:fragment slot="footer">
-        <footer class="p-1 text-center">
-            <p>
-                <strong>YouOkay</strong>
-                is in experimental beta.
-                <a href="placeholder.com" class="variant-outline btn">Send Feedback</a>
-            </p>
-        </footer>
-    </svelte:fragment>
 </AppShell>

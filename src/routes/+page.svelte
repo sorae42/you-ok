@@ -29,6 +29,8 @@
             even when you are away from social media.
         </p>
     </div>
+
+    <!-- TODO: Create a login component -->
     <div class="bg-lgrey prose prose-invert w-3/5 flex-1 rounded-xl p-12 lg:max-w-lg">
         <h2 class="text-center">{authMessage}</h2>
         <Auth
@@ -55,7 +57,6 @@
 
         <br />
 
-        <!-- TODO: Use something better than anchor -->
         {#if authView == 0}
             <a
                 href={'#'}

@@ -36,6 +36,8 @@ export const actions = {
 
         const session = await getSession();
 
+        console.log(avatar_url);
+
         const { error } = await supabase.from('profiles').upsert({
             id: session?.user.id,
             username,

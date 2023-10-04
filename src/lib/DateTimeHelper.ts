@@ -1,5 +1,10 @@
 import { DateTime, type DurationUnits } from "luxon";
 
+export function getFormattedDiff(time: string) {
+    let hours = getDiff(time, 'hours').hours || 0;
+    return timeFormatter(hours);
+}
+
 export function timeFormatter(hours: number) {
     let output: string;
 
@@ -24,5 +29,5 @@ export function getDiff(time: string, type: DurationUnits) {
     const now = DateTime.now();
     const toDiff = DateTime.fromISO(time);
 
-    return now.diff(toDiff, type).toObject() || 0;
+    return now.diff(toDiff, type).toObject();
 }
