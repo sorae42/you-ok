@@ -10,7 +10,7 @@
     let { session, supabase, streamed } = data;
     $: ({ session, supabase, streamed } = data);
 
-    let nItems = 7;
+    let nItems = 5;
     $: items = [...Array(nItems).keys()];
 
     /*
