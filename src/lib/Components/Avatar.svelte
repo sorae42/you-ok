@@ -36,7 +36,7 @@
 <Avatar
     src={imageUrl}
     rounded="rounded-full"
-    border="border-2 border-surface-300-600-token"
+    border="border-2 border-surface-300-600-token hover:!border-primary-500"
     width={size}
     fallback={userImage}
     initials={result}

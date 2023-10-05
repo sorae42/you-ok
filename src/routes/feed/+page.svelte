@@ -2,7 +2,7 @@
     import Avatar from '$lib/Components/Avatar.svelte';
     import Masonry from 'svelte-bricks';
     import { getFormattedDiff } from '$lib/DateTimeHelper.js';
-    import { FaceFrownSolid, FaceSmileBeamSolid } from 'svelte-awesome-icons';
+    import { CommentsSolid, FaceFrownSolid, FaceSmileBeamSolid } from 'svelte-awesome-icons';
     import type { PageData } from './$types';
 
     export let data: PageData;
@@ -12,64 +12,92 @@
 
     let nItems = 5;
     $: items = [...Array(nItems).keys()];
-
-    /*
-    statusList.push({
-        httpStatus: 0,
-        id: 0,
-        username: "YouOkay Announcement",
-        avatarUrl: "",
-        status: true,
-        status_text: "YouOkay is in Beta!",
-        text: "Expect things to be changed over time. If you found any bugs, feel free to send a feedback to the button to your left (open the burger menu to see the button if you are on the phone).",
-        updated_on: "2023-10-04T14:31:32Z"
-    })
-    */
 </script>
 
 <div class="p-2 lg:p-4">
     {#await data.streamed.statusList}
         <!-- TODO: make better placeholder -->
-        <Masonry {items} duration={0} minColWidth={400} animate={false}>
-            <div class="card rounded-lg p-4">
-                <div class="placeholder-circle w-12 animate-pulse"></div>
+        <Masonry {items} duration={0} minColWidth={500} animate={false}>
+            <div class="card rounded-lg p-4 [&>*]:rounded-xl">
+                <div class="!placeholder-circle w-12 animate-pulse"></div>
+                <br />
+                <div class="placeholder animate-pulse" />
                 <br />
                 <div class="placeholder animate-pulse" />
             </div>
         </Masonry>
     {:then statusItems}
-        <Masonry
-            items={statusItems}
-            duration={0}
-            let:item
-            minColWidth={400}
-            animate={false}
-            getId={(item) => item.id}
-        >
-            <div class="card rounded-lg p-4">
-                <div class="flex flex-row">
-                    <span>
-                        <Avatar {supabase} url={item.avatarUrl} size="w-12" name={item.username} />
-                    </span>
-                    <div class="mx-2 flex flex-col">
-                        <strong>{item.username}</strong>
-                        <span>{getFormattedDiff(item.updated_on)} ago</span>
-                    </div>
-                </div>
-                <article>
-                    <span class="my-2 flex flex-row gap-2">
-                        {#if item.status}
-                            <FaceSmileBeamSolid />
-                        {:else}
-                            <FaceFrownSolid />
-                        {/if}
-                        <strong>{item.status_text}</strong>
-                    </span>
-                    <p>
-                        {item.text}
-                    </p>
-                </article>
+        <div class="card flex flex-col justify-evenly rounded-lg p-4 lg:flex-row">
+            <div>
+                <h3 class="h3">YouOkay is still in Beta</h3>
+                <p class="[&>*]:inline">
+                    If you found any bugs, please send a feedback by clicking on the
+                    <CommentsSolid /> Send Feedback button.
+                </p>
             </div>
-        </Masonry>
+            <div class="flex align-middle">
+                <a href="mailto:bonniefoxy2009@gmail.com" class="variant-filled-tertiary btn gap-2">
+                    <CommentsSolid /> Send Feedback
+                </a>
+            </div>
+        </div>
+        <br />
+        {#if statusItems.length > 0}
+            <Masonry
+                items={statusItems}
+                duration={0}
+                let:item
+                minColWidth={500}
+                animate={false}
+                getId={(item) => item.id}
+            >
+                <div class="card rounded-lg p-4">
+                    <div class="flex flex-row">
+                        <span>
+                            <Avatar
+                                {supabase}
+                                url={item.avatarUrl}
+                                size="w-12"
+                                name={item.username}
+                            />
+                        </span>
+                        <div class="mx-2 flex flex-col">
+                            <strong>
+                                {item.display_name}
+                                {#if item.badge !== null}
+                                    <span class="variant-filled-secondary badge mx-2">
+                                        {item.badge}
+                                    </span>
+                                {/if}
+                            </strong>
+                            <span>@{item.username} · {getFormattedDiff(item.updated_on)} ago</span>
+                        </div>
+                    </div>
+                    <article>
+                        <span class="my-2 flex flex-row gap-2">
+                            {#if item.status}
+                                <FaceSmileBeamSolid />
+                            {:else}
+                                <FaceFrownSolid />
+                            {/if}
+                            <strong>{item.status_text}</strong>
+                        </span>
+                        <p>
+                            {item.text}
+                        </p>
+                    </article>
+                </div>
+            </Masonry>
+            <br />
+            <p class="text-center">No more status to show.</p>
+        {:else}
+            <div class="flex flex-col items-center">
+                <br />
+                <img src="$lib/assets/question.svg" alt="question mark icon" class="w-64" />
+                <p class="text-center">
+                    It seems you haven't followed anyone or they haven't write any status.
+                </p>
+            </div>
+        {/if}
     {/await}
 </div>

@@ -1,10 +1,9 @@
 <script lang="ts">
-    import { getDrawerStore, popup } from '@skeletonlabs/skeleton';
-    import type { ModalSettings, PopupSettings } from '@skeletonlabs/skeleton';
+    import { getDrawerStore } from '@skeletonlabs/skeleton';
+    import type { ModalSettings } from '@skeletonlabs/skeleton';
     import {
         CommentsSolid,
         NewspaperSolid,
-        PenToSquareSolid,
         PersonCircleMinusSolid,
         UserPenSolid
     } from 'svelte-awesome-icons';
@@ -12,15 +11,17 @@
     import { getModalStore } from '@skeletonlabs/skeleton';
     import type { SupabaseClient } from '@supabase/supabase-js';
     import { redirect } from '@sveltejs/kit';
-    
+    //import Marqueeck from '@arisbh/marqueeck';
+
+    export let supabase: SupabaseClient;
+    export let username: string;
+    export let displayName: string;
+
     const drawerStore = getDrawerStore();
 
     function drawerClose(): void {
         drawerStore.close();
     }
-
-
-    export let supabase: SupabaseClient;
 
     const modalStore = getModalStore();
 
@@ -39,47 +40,29 @@
         }
     };
 
-    const updateStatusDisallow: PopupSettings = {
-        event: 'hover',
-        target: 'updateStatusDisallow',
-        placement: 'bottom'
-    };
-
     async function signOut() {
         drawerClose();
         modalStore.trigger(modal);
     }
 </script>
 
-<div class="card p-4 variant-filled-secondary z-50" data-popup="updateStatusDisallow">
-	<p>This feature is being reworked on. Check back soon!</p>
-	<div class="arrow variant-filled-secondary" />
-</div>
-
-<nav class="list-nav h-full space-y-2 !no-underline">
-    <ul class="flex h-full flex-1 flex-col justify-between [&>*>*>*]:h-14 [&>*>*>*]:gap-4">
+<nav class="list-nav space-y-2 !no-underline">
+    <ul class="flex h-full flex-1 flex-col [&>*>*>*]:h-14 [&>*>*>*]:gap-4">
         <div>
-            <li>
-                <button
-                    class="hover:text-white variant-filled-primary"
-                    use:popup={updateStatusDisallow}
-                    disabled
-                >
-                    <PenToSquareSolid /> Update status
-                </button>
-            </li>
-            <li>
-                <a href="/feed" on:click={drawerClose} data-sveltekit-preload-data>
-                    <NewspaperSolid /> Feed
+            <li class="text-right">
+                <a href="/{username}" class="!block !h-max">
+                    <strong>{displayName}</strong>
+                    <br />
+                    <span>@{username}</span>
                 </a>
             </li>
             <li>
-                <a href="/edit-profile" on:click={drawerClose} data-sveltekit-preload-data>
+                <a href="/edit-profile" on:click={drawerClose}>
                     <UserPenSolid /> Edit Profile
                 </a>
             </li>
         </div>
-
+        <hr />
         <div>
             <li>
                 <a href="mailto:bonniefoxy2009@gmail.com">

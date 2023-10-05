@@ -4,8 +4,10 @@ import type { DateTime } from 'luxon';
 export interface Status {
     httpStatus: number,
     id: number,
+    display_name: string,
     username: string,
     avatarUrl: string,
+    badge: string | null,
     status: boolean,
     status_text: string,
     text: string,
@@ -18,7 +20,8 @@ interface Profile {
     display_name: string,
     string_good: string,
     string_bad: string,
-    avatar_url: string
+    avatar_url: string,
+    badge: string | null
 }
 
 export class StatusHelper {
@@ -33,7 +36,7 @@ export class StatusHelper {
             const { data, error, status } = await this.supabase
                 .from('statuses')
                 .select(
-                    'id, is_well, status_text, updated_on, profiles(id, username, display_name, string_good, string_bad, avatar_url)'
+                    'id, is_well, status_text, updated_on, profiles(id, username, display_name, string_good, string_bad, avatar_url, badge)'
                 )
                 .eq('user_id', userID)
                 .single();
@@ -41,14 +44,16 @@ export class StatusHelper {
             if (error) throw error;
 
             // FIXME: this works but types are not parsed correctly so there are errors
-            // @ts-ignore
+            // @ts-ignore - remove this to see the error
             const profileData: Profile = data.profiles;
         
             let userStatus: Status = {
                 httpStatus: status,
                 id: data.id,
+                display_name: profileData.display_name,
                 username: profileData.username,
                 avatarUrl: profileData.avatar_url,
+                badge: profileData.badge || null,
                 status: data.is_well,
                 status_text: data.is_well ? profileData.string_good : profileData.string_bad || "",
                 text: data.status_text || "",

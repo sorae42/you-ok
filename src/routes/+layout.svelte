@@ -3,7 +3,7 @@
     import '../app.css';
     import { invalidate } from '$app/navigation';
     import { onMount } from 'svelte';
-    import { fade, fly } from 'svelte/transition';
+    import { fly } from 'svelte/transition';
     import {
         AppBar,
         AppShell,
@@ -13,18 +13,12 @@
         initializeStores,
         Modal,
         storePopup,
-
-        type ToastSettings,
-
-        getToastStore
-
-
     } from '@skeletonlabs/skeleton';
     import { computePosition, autoUpdate, offset, shift, flip, arrow } from '@floating-ui/dom';
 
     import NavigationBar from '$lib/Components/NavigationBar.svelte';
     import BurgerIcon from '$lib/assets/burger.svelte';
-    import { navigating } from '$app/stores';
+    import Avatar from '$lib/Components/Avatar.svelte';
 
     initializeStores();
 
@@ -32,8 +26,8 @@
 
     export let data;
 
-    let { supabase, session } = data;
-    $: ({ supabase, session } = data);
+    let { supabase, session, profile } = data;
+    $: ({ supabase, session, profile } = data);
 
     const drawerStore = getDrawerStore();
 
@@ -60,14 +54,13 @@
 
 <Toast position="tr" />
 <Modal />
-<Drawer width="w-[280px]">
-    <h2 class="flex flex-row gap-2 p-4 text-xl">
+<Drawer width="w-[280px]" position="right">
+    <h2 class="flex flex-row justify-between gap-2 p-4 text-xl">
         <img src="$lib/assets/icon.svg" alt="YouOkay icon" class="w-8" />
-        <strong>YouOkay</strong>
-        <span class="variant-filled-warning badge">BETA</span>
+        <Avatar {supabase} url={profile?.avatar_url} size="!w-10" name={profile?.display_name} />
     </h2>
     <hr />
-    <NavigationBar {supabase} />
+    <NavigationBar {supabase} username={profile?.username} displayName={profile?.display_name} />
 </Drawer>
 
 <AppShell
@@ -91,12 +84,22 @@
                         </h2>
                     </div>
                 </svelte:fragment>
+                <svelte:fragment slot="trail">
+                    <div class="flex gap-2">
+                        <!-- TODO: Figure out what the fuck this is -->
+                        <!-- svelte-ignore a11y-click-events-have-key-events -->
+                        <span on:click={drawerOpen}>
+                            <Avatar
+                                {supabase}
+                                url={profile?.avatar_url}
+                                size="!w-10"
+                                name={profile?.display_name}
+                            />
+                        </span>
+                    </div>
+                </svelte:fragment>
             </AppBar>
         {/if}
-    </svelte:fragment>
-
-    <svelte:fragment slot="sidebarLeft">
-        <NavigationBar {supabase} />
     </svelte:fragment>
 
     <div>

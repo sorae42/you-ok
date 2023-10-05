@@ -1,6 +1,7 @@
 <script lang="ts">
     import { enhance } from '$app/forms';
     import {
+        AtSolid,
         DiscordBrand,
         FaceFrownSolid,
         FaceSmileBeamSolid,
@@ -23,7 +24,9 @@
     let loading = false;
 
     let profileForm: HTMLFormElement;
+
     let username: string = profile?.username ?? '';
+    let display_name: string = profile?.display_name ?? '';
     let avatarUrl: string = profile?.avatar_url ?? '';
     let privateProfile: boolean = profile?.private_profile ?? '';
     let pronoun: string = profile?.pronoun ?? '';
@@ -58,30 +61,46 @@
 >
     <div class="flex flex-col justify-center p-12 lg:flex-row">
         <div>
-            <Avatar
+            <Avatar {supabase} bind:url={avatarUrl} size="w-64" name={username} />
+            <br />
+            <AvatarUpload
                 {supabase}
                 bind:url={avatarUrl}
                 on:upload={() => {
                     profileForm.requestSubmit();
                 }}
-                size="w-64"
-                name={username}
             />
-            <br />
-            <AvatarUpload {supabase} />
         </div>
         <div class="w-96 space-y-6">
             <div class="space-y-4">
                 <h2 class="h2">Basic Infomation</h2>
                 <div>
                     <label for="username">Username</label>
+                    <div class="input-group input-group-divider grid-cols-[auto_1fr_auto]">
+                        <div class="input-group-shim"><AtSolid /></div>
+                        <input
+                            id="username"
+                            name="username"
+                            type="text"
+                            value={form?.username ?? username}
+                            required
+                        />
+                    </div>
+                    <p>
+                        Name that people can use to find you. Only letters, numbers, hyphen (-) and
+                        underscore (_) are allowed.
+                    </p>
+                </div>
+                <div>
+                    <label for="displayName">Name</label>
                     <input
-                        id="username"
-                        name="username"
+                        id="displayName"
+                        name="displayName"
                         type="text"
-                        value={form?.username ?? username}
+                        value={form?.display_name ?? display_name}
                         required
                     />
+                    <p>Name that will shown on your profile.</p>
                 </div>
                 <div>
                     <label for="pronoun">Pronoun</label>
@@ -93,7 +112,7 @@
                     />
                 </div>
                 <div>
-                    <p>Private Profile is still work in progress. Check back soon!</p>
+                    <p>Bio and Private Profile is still work in progress. Check back soon!</p>
                     <!-- TODO: Private profile
                     <SlideToggle
                         name="privateProfile"
@@ -118,6 +137,8 @@
                             name="stringGood"
                             type="text"
                             value={form?.string_good ?? string_good}
+                            placeholder="I'm feeling good!"
+                            required
                         />
                     </div>
                 </div>
@@ -130,6 +151,8 @@
                             name="stringBad"
                             type="text"
                             value={form?.string_bad ?? string_bad}
+                            placeholder="I'm feeling bad..."
+                            required
                         />
                     </div>
                 </div>

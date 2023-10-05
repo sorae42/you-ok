@@ -10,7 +10,7 @@ export const load = async ({ locals: { supabase, getSession } }) => {
     const { data: profile } = await supabase
         .from('profiles')
         .select(
-            `username, website, avatar_url, twitter, github, discord, pronoun, private_profile, string_good, string_bad`
+            `username, display_name, website, avatar_url, twitter, github, discord, pronoun, private_profile, string_good, string_bad`
         )
         .eq('id', session.user.id)
         .single();
@@ -21,6 +21,7 @@ export const load = async ({ locals: { supabase, getSession } }) => {
 export const actions = {
     update: async ({ request, locals: { supabase, getSession } }) => {
         const formData = await request.formData();
+        const display_name = formData.get('displayName') as string;
         const username = formData.get('username') as string;
         const avatar_url = formData.get('avatarUrl') as string;
         const private_profile = formData.get('privateProfile') as string;
@@ -41,6 +42,7 @@ export const actions = {
         const { error } = await supabase.from('profiles').upsert({
             id: session?.user.id,
             username,
+            display_name,
             avatar_url,
             private_profile: private_profile || false,
             pronoun,
@@ -54,10 +56,10 @@ export const actions = {
         });
 
         if (error) {
-            
             return fail(500, {
                 username,
                 avatar_url,
+                display_name,
                 private_profile,
                 pronoun,
                 string_good,
@@ -71,6 +73,7 @@ export const actions = {
 
         return {
             username,
+            display_name,
             avatar_url,
             private_profile,
             pronoun,

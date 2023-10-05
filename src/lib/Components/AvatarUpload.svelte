@@ -1,20 +1,31 @@
 <script lang="ts">
     import { ImageHelper } from '$lib/ImageHelper';
+    import { getToastStore } from '@skeletonlabs/skeleton';
     import type { SupabaseClient } from '@supabase/supabase-js';
+    import { createEventDispatcher } from 'svelte';
 
     export let supabase: SupabaseClient;
+    export let url: string | undefined;
 
-    let url: string;
     let uploading = false;
     let files: FileList;
 
     let imageUpload = new ImageHelper(supabase);
+    let dispatch = createEventDispatcher();
+    const toastStore = getToastStore();
 
-    function uploadAvatar() {
+    async function uploadAvatar() {
         try {
+            toastStore.trigger({
+                message: 'Uploading...',
+                background: 'variant-filled-warning',
+                hideDismiss: true
+            });
             uploading = true;
-            console.log("uploadAvatar() called.");
-            imageUpload.uploadImage(files, 'avatars');
+            url = await imageUpload.uploadImage(files, 'avatars');
+            setTimeout(() => {
+                dispatch('upload');
+            }, 100);
         } catch (error) {
             if (error instanceof Error) {
                 alert(error.message);

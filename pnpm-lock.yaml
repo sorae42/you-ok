@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@arisbh/marqueeck':
+    specifier: ^0.3.9
+    version: 0.3.9(svelte@3.59.2)
   '@auth/core':
     specifier: ^0.2.5
     version: 0.2.5
@@ -144,6 +147,14 @@ packages:
       '@jridgewell/gen-mapping': 0.3.3
       '@jridgewell/trace-mapping': 0.3.19
     dev: true
+
+  /@arisbh/marqueeck@0.3.9(svelte@3.59.2):
+    resolution: {integrity: sha512-Ctq1ZurJMvCOaIi8b3dw5RQ8qVi+xgty3EyJsDQqDy0ca0NynAJzejf/pWhoD07MpL1Y0RHCrogeLwrJ8E1X4A==}
+    peerDependencies:
+      svelte: ^3.54.0
+    dependencies:
+      svelte: 3.59.2
+    dev: false
 
   /@auth/core@0.2.5:
     resolution: {integrity: sha512-e9jQOW6kSnxa0gfeR5neqLIDAUvZtyGTh3YpO2eN5F/5gBybE582M5e34rXlJKj+/tAgf+oYBJAY5CUxGTY9tw==}

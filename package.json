@@ -47,6 +47,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@arisbh/marqueeck": "^0.3.9",
 		"@auth/core": "^0.2.5",
 		"@floating-ui/dom": "^1.5.3",
 		"@supabase/auth-helpers-sveltekit": "^0.10.3",
