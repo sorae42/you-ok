@@ -88,8 +88,6 @@
                 </svelte:fragment>
                 <svelte:fragment slot="trail">
                     <div class="flex gap-2">
-                        <!-- TODO: Figure out what the fuck this is -->
-                        <!-- svelte-ignore a11y-click-events-have-key-events -->
                         <button class="p-0" on:click={drawerOpen}>
                             <Avatar
                                 {supabase}
