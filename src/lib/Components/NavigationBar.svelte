@@ -47,33 +47,31 @@
 </script>
 
 <nav class="list-nav space-y-2 !no-underline">
-    <ul class="flex h-full flex-1 flex-col [&>*>*>*]:h-14 [&>*>*>*]:gap-4">
-        <div>
-            <li class="text-right">
-                <a href="/{username}" class="!block !h-max">
-                    <strong>{displayName}</strong>
-                    <br />
-                    <span>@{username}</span>
-                </a>
-            </li>
-            <li>
-                <a href="/edit-profile" on:click={drawerClose}>
-                    <UserPenSolid /> Edit Profile
-                </a>
-            </li>
-        </div>
+    <ul class="flex h-full flex-1 flex-col [&>*>*]:h-14 [&>*>*]:gap-4">
+        <li class="text-right">
+            <a href="/{username}" class="!block !h-max">
+                <strong>
+                    {displayName}
+                </strong>
+                <br />
+                <span>@{username}</span>
+            </a>
+        </li>
+        <li>
+            <a href="/edit-profile" on:click={drawerClose}>
+                <UserPenSolid /> Edit Profile
+            </a>
+        </li>
         <hr />
-        <div>
-            <li>
-                <a href="mailto:bonniefoxy2009@gmail.com">
-                    <CommentsSolid /> Send Feedback
-                </a>
-            </li>
-            <li>
-                <a href={'#'} on:click={signOut} class="hover:!variant-filled-error">
-                    <PersonCircleMinusSolid /> Sign out
-                </a>
-            </li>
-        </div>
+        <li>
+            <a href="mailto:bonniefoxy2009@gmail.com">
+                <CommentsSolid /> Send Feedback
+            </a>
+        </li>
+        <li>
+            <a href={'#'} on:click={signOut} class="hover:!variant-filled-error">
+                <PersonCircleMinusSolid /> Sign out
+            </a>
+        </li>
     </ul>
 </nav>

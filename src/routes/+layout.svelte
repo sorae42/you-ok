@@ -17,8 +17,8 @@
     import { computePosition, autoUpdate, offset, shift, flip, arrow } from '@floating-ui/dom';
 
     import NavigationBar from '$lib/Components/NavigationBar.svelte';
-    import BurgerIcon from '$lib/assets/burger.svelte';
     import Avatar from '$lib/Components/Avatar.svelte';
+    import { XmarkSolid } from 'svelte-awesome-icons';
 
     initializeStores();
 
@@ -46,6 +46,10 @@
     function drawerOpen(): void {
         drawerStore.open({});
     }
+
+    function drawerClose(): void {
+        drawerStore.close();
+    }
 </script>
 
 <svelte:head>
@@ -56,7 +60,9 @@
 <Modal />
 <Drawer width="w-[280px]" position="right">
     <h2 class="flex flex-row justify-between gap-2 p-4 text-xl">
-        <img src="$lib/assets/icon.svg" alt="YouOkay icon" class="w-8" />
+        <button class="p-0" on:click={drawerClose}>
+            <XmarkSolid />
+        </button>
         <Avatar {supabase} url={profile?.avatar_url} size="!w-10" name={profile?.display_name} />
     </h2>
     <hr />
@@ -75,9 +81,6 @@
             <AppBar>
                 <svelte:fragment slot="lead">
                     <div class="flex items-center">
-                        <button class="btn btn-sm mr-4 !bg-inherit lg:hidden" on:click={drawerOpen}>
-                            <BurgerIcon />
-                        </button>
                         <h2 class="flex flex-row gap-2 text-xl">
                             <img src="$lib/assets/icon.svg" alt="YouOkay icon" class="w-8" />
                             <span class="variant-filled-warning badge">BETA</span>
@@ -88,14 +91,14 @@
                     <div class="flex gap-2">
                         <!-- TODO: Figure out what the fuck this is -->
                         <!-- svelte-ignore a11y-click-events-have-key-events -->
-                        <span on:click={drawerOpen}>
+                        <button class="p-0" on:click={drawerOpen}>
                             <Avatar
                                 {supabase}
                                 url={profile?.avatar_url}
                                 size="!w-10"
                                 name={profile?.display_name}
                             />
-                        </span>
+                        </button>
                     </div>
                 </svelte:fragment>
             </AppBar>
