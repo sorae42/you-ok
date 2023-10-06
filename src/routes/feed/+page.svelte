@@ -14,6 +14,10 @@
     $: items = [...Array(nItems).keys()];
 </script>
 
+<svelte:head>
+    <title>Feed - YouOkay</title>
+</svelte:head>
+
 <div class="p-2 lg:p-4">
     {#await data.streamed.statusList}
         <!-- TODO: make better placeholder -->

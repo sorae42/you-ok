@@ -52,6 +52,10 @@
     };
 </script>
 
+<svelte:head>
+    <title>Edit Profile - YouOkay</title>
+</svelte:head>
+
 <form
     method="post"
     action="?/update"

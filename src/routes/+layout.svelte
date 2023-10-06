@@ -65,7 +65,6 @@
         </button>
         <Avatar {supabase} url={profile?.avatar_url} size="!w-10" name={profile?.display_name} />
     </h2>
-    <hr />
     <NavigationBar {supabase} username={profile?.username} displayName={profile?.display_name} />
 </Drawer>
 
