@@ -19,7 +19,7 @@
 </svelte:head>
 
 <div class="p-2 lg:p-4">
-    {#await data.streamed.statusList}
+    {#await streamed.statusList}
         <!-- TODO: make better placeholder -->
         <Masonry {items} duration={0} minColWidth={500} animate={false}>
             <div class="card rounded-lg p-4 [&>*]:rounded-xl">
