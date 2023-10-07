@@ -58,12 +58,14 @@
                 <div class="card rounded-lg p-4">
                     <div class="flex flex-row">
                         <span>
-                            <Avatar
-                                {supabase}
-                                url={item.avatarUrl}
-                                size="w-12"
-                                name={item.username}
-                            />
+                            <a href="/user/{item.username}">
+                                <Avatar
+                                    {supabase}
+                                    url={item.avatarUrl}
+                                    size="w-12"
+                                    name={item.display_name}
+                                />
+                            </a>
                         </span>
                         <div class="mx-2 flex flex-col">
                             <strong>

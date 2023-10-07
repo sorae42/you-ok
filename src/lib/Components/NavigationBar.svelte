@@ -3,7 +3,6 @@
     import type { ModalSettings } from '@skeletonlabs/skeleton';
     import {
         CommentsSolid,
-        NewspaperSolid,
         PersonCircleMinusSolid,
         UserPenSolid
     } from 'svelte-awesome-icons';
@@ -49,7 +48,7 @@
 <nav class="list-nav space-y-2 !no-underline">
     <ul class="flex h-full flex-1 flex-col [&>*>*]:h-14 [&>*>*]:gap-4">
         <li class="text-right">
-            <a href="/{username}" class="!block !h-max">
+            <a href="/user/{username}" class="!block !h-max" on:click={drawerClose}>
                 <strong>
                     {displayName}
                 </strong>

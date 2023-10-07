@@ -13,12 +13,17 @@
         initializeStores,
         Modal,
         storePopup,
+        TabGroup,
+        TabAnchor,
+        type PopupSettings,
+        popup
     } from '@skeletonlabs/skeleton';
     import { computePosition, autoUpdate, offset, shift, flip, arrow } from '@floating-ui/dom';
 
     import NavigationBar from '$lib/Components/NavigationBar.svelte';
     import Avatar from '$lib/Components/Avatar.svelte';
-    import { XmarkSolid } from 'svelte-awesome-icons';
+    import { NewspaperSolid, PenToSquareSolid, XmarkSolid } from 'svelte-awesome-icons';
+    import { page } from '$app/stores';
 
     initializeStores();
 
@@ -50,12 +55,34 @@
     function drawerClose(): void {
         drawerStore.close();
     }
+
+    const statusBtnHover: PopupSettings = {
+        event: 'hover',
+        target: 'statusBtnHover',
+        placement: 'bottom'
+    };
+
+    const updateBtnHover: PopupSettings = {
+        event: 'hover',
+        target: 'updateBtnHover',
+        placement: 'bottom'
+    };
 </script>
 
 <svelte:head>
     <title>YouOkay</title>
 </svelte:head>
 
+<div class="card variant-filled-secondary z-50 p-4" data-popup="statusBtnHover">
+    <div class="variant-filled-secondary arrow" />
+    <p>Status Feed</p>
+</div>
+<div class="card variant-filled-secondary z-50 p-4" data-popup="updateBtnHover">
+    <div class="variant-filled-secondary arrow" />
+    <p>Update your Status</p>
+</div>
+
+<!-- TODO: Move AppShell to a route group instead of make this half-baked -->
 <Toast position="tr" />
 <Modal />
 <Drawer width="w-[280px]" position="right">
@@ -87,7 +114,26 @@
                     </div>
                 </svelte:fragment>
                 <svelte:fragment slot="trail">
-                    <div class="flex gap-2">
+                    <div class="flex gap-4">
+                        <TabGroup
+                            justify="justify-center"
+                            active="variant-filled-primary"
+                            hover="hover:variant-soft-primary"
+                            rounded="rounded-lg"
+                            border=""
+                            class="bg-surface-100-800-token"
+                        >
+                            <TabAnchor href="/feed" selected={$page.url.pathname === '/feed'}>
+                                <div use:popup={statusBtnHover} class="[&>*]:pointer-events-none">
+                                    <NewspaperSolid />
+                                </div>
+                            </TabAnchor>
+                            <TabAnchor href="/update-status">
+                                <div use:popup={updateBtnHover} class="[&>*]:pointer-events-none">
+                                    <PenToSquareSolid />
+                                </div>
+                            </TabAnchor>
+                        </TabGroup>
                         <button class="p-0" on:click={drawerOpen}>
                             <Avatar
                                 {supabase}

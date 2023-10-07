@@ -1,5 +1,4 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
-import type { DateTime } from 'luxon';
 
 export interface Status {
     httpStatus: number,
@@ -24,11 +23,28 @@ interface Profile {
     badge: string | null
 }
 
+// TODO: better eror handling
 export class StatusHelper {
     protected supabase: SupabaseClient;
 
     constructor(sb: SupabaseClient) {
         this.supabase = sb;
+    }
+
+    public async getStatusfromUsername(username: string) {
+        try {
+            const { data, error } = await this.supabase
+                .from('profiles')
+                .select('id')
+                .eq('username', username)
+                .single();
+
+            if (error) throw error;
+
+            return this.getStatus(data.id);
+        } catch (error) {
+            return error; 
+        }
     }
 
     public async getStatus(userID: string) {
