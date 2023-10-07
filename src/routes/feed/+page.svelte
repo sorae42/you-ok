@@ -35,7 +35,7 @@
             <div>
                 <h3 class="h3">YouOkay is still being reworked on</h3>
                 <p class="[&>*]:inline">
-                    Most of the features are not already to be used.
+                    Some features are not already to be used.
                 </p>
             </div>
             <div class="flex align-middle">
