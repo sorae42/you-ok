@@ -31,12 +31,11 @@
             </div>
         </Masonry>
     {:then statusItems}
-        <div class="card flex flex-col justify-evenly rounded-lg p-4 lg:flex-row">
+        <div class="card flex flex-col justify-around rounded-lg p-4 lg:flex-row">
             <div>
-                <h3 class="h3">YouOkay is still in Beta</h3>
+                <h3 class="h3">YouOkay is still being reworked on</h3>
                 <p class="[&>*]:inline">
-                    If you found any bugs, please send a feedback by clicking on the
-                    <CommentsSolid /> Send Feedback button.
+                    Most of the features are not already to be used.
                 </p>
             </div>
             <div class="flex align-middle">
