@@ -78,7 +78,7 @@ export class StatusHelper {
 
             return userStatus;
         } catch (error) {
-            return {httpStatus: 404, error};
+            return error;
         }
     }
 }

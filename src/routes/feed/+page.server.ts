@@ -29,7 +29,7 @@ async function fetchFeed(supabase: SupabaseClient) {
     if (data) {
         for (let user of data) {
             let a: any = await status.getStatus(user.following);
-            if (a.httpStatus == 404) continue;
+            if (a.httpStatus == 404 || a.code == "PGRST116") continue;
             statusList.push(a);
         }
     }
