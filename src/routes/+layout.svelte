@@ -1,136 +1,154 @@
+<!-- src/routes/+layout.svelte -->
 <script lang="ts">
-    import { page } from '$app/stores';
-    import { supabase } from '$lib/supabaseClient';
+    import '../app.css';
     import { invalidate } from '$app/navigation';
     import { onMount } from 'svelte';
-    import '../app.scss';
+    import { fly } from 'svelte/transition';
+    import {
+        AppBar,
+        AppShell,
+        Toast,
+        Drawer,
+        getDrawerStore,
+        initializeStores,
+        Modal,
+        storePopup,
+        TabGroup,
+        TabAnchor,
+        type PopupSettings,
+        popup
+    } from '@skeletonlabs/skeleton';
+    import { computePosition, autoUpdate, offset, shift, flip, arrow } from '@floating-ui/dom';
+
+    import NavigationBar from '$lib/Components/NavigationBar.svelte';
+    import Avatar from '$lib/Components/Avatar.svelte';
+    import { NewspaperSolid, PenToSquareSolid, XmarkSolid } from 'svelte-awesome-icons';
+    import { page } from '$app/stores';
+
+    initializeStores();
+
+    storePopup.set({ computePosition, autoUpdate, offset, shift, flip, arrow });
+
+    export let data;
+
+    let { supabase, session, profile } = data;
+    $: ({ supabase, session, profile } = data);
+
+    const drawerStore = getDrawerStore();
+
+    $: classesSidebar = session === null ? 'w-0' : 'w-0 lg:w-64';
 
     onMount(() => {
-        const {
-            data: { subscription }
-        } = supabase.auth.onAuthStateChange(() => {
-            invalidate('supabase:auth');
+        const { data } = supabase.auth.onAuthStateChange((event, _session) => {
+            if (_session?.expires_at !== session?.expires_at) {
+                invalidate('supabase:auth');
+            }
         });
 
-        return () => {
-            subscription.unsubscribe();
-        };
+        return () => data.subscription.unsubscribe();
     });
+
+    function drawerOpen(): void {
+        drawerStore.open({});
+    }
+
+    function drawerClose(): void {
+        drawerStore.close();
+    }
+
+    const statusBtnHover: PopupSettings = {
+        event: 'hover',
+        target: 'statusBtnHover',
+        placement: 'bottom'
+    };
+
+    const updateBtnHover: PopupSettings = {
+        event: 'hover',
+        target: 'updateBtnHover',
+        placement: 'bottom'
+    };
 </script>
 
-<nav>
-    {#if $page.data.session}
-        <span>
-            <a href="/">
-                <span>Update Status</span>
-                <i class="fas fa-fw fa-pen-to-square" />
-            </a>
-            <a href="/feed">
-                <span>Feed</span>
-                <i class="fas fa-fw fa-message" />
-            </a>
-            <a href="/profile">
-                <span>Edit Profile</span>
-                <i class="fas fa-fw fa-user-pen" />
-            </a>
-        </span>
-    {:else}
-        <span>
-            <img src="$lib/assets/icon.svg" alt="YouOkay">
-        </span>
-    {/if}
-</nav>
+<svelte:head>
+    <title>YouOkay</title>
+</svelte:head>
 
-<div id="main">
-    <slot />
+<div class="card variant-filled-secondary z-50 p-4" data-popup="statusBtnHover">
+    <div class="variant-filled-secondary arrow" />
+    <p>Status Feed</p>
+</div>
+<div class="card variant-filled-secondary z-50 p-4" data-popup="updateBtnHover">
+    <div class="variant-filled-secondary arrow" />
+    <p>Update your Status</p>
 </div>
 
-<footer>
-    <span>
-        <p><strong>YouOkay</strong> - Connected wherever.</p>
-        <p>
-            Made with <i class="fa-solid fa-heart" /> by
-            <a href="https://sorae42.github.io">sorae42</a>!
-        </p>
-    </span>
-    <span>
-        <p>YouOkay is a free service and will forever be. Support me by spreading the words!</p>
-    </span>
-    <span style="opacity: 60%">
-        <p>
-            YouOkay is in beta stage. <a href="mailto:bonniefoxy2009@gmail.com">Send Feedback</a>
-        </p>
-    </span>
-</footer>
+<!-- TODO: Move AppShell to a route group instead of make this half-baked -->
+<Toast position="tr" />
+<Modal />
+<Drawer width="w-[280px]" position="right">
+    <h2 class="flex flex-row justify-between gap-2 p-4 text-xl">
+        <button class="p-0" on:click={drawerClose}>
+            <XmarkSolid />
+        </button>
+        <Avatar {supabase} url={profile?.avatar_url} size="!w-10" name={profile?.display_name} />
+    </h2>
+    <NavigationBar {supabase} username={profile?.username} displayName={profile?.display_name} />
+</Drawer>
 
-<style lang="scss">
-    div#main {
-        flex: 1;
-    }
+<AppShell
+    scrollbarGutter="auto"
+    slotSidebarLeft="bg-surface-500/5 {classesSidebar}"
+    transitionIn={fly}
+    transitionOut={fly}
+    transitionInParams={{ duration: 420 }}
+>
+    <svelte:fragment slot="header">
+        {#if session}
+            <AppBar>
+                <svelte:fragment slot="lead">
+                    <div class="flex items-center">
+                        <h2 class="flex flex-row gap-2 text-xl">
+                            <img src="$lib/assets/icon.svg" alt="YouOkay icon" class="w-8" />
+                            <span class="variant-filled-warning badge">BETA</span>
+                        </h2>
+                    </div>
+                </svelte:fragment>
+                <svelte:fragment slot="trail">
+                    <div class="flex gap-4">
+                        <TabGroup
+                            justify="justify-center"
+                            active="variant-filled-primary"
+                            hover="hover:variant-soft-primary"
+                            rounded="rounded-lg"
+                            border=""
+                            class="bg-surface-100-800-token"
+                        >
+                            <TabAnchor href="/feed" selected={$page.url.pathname === '/feed'}>
+                                <div use:popup={statusBtnHover} class="[&>*]:pointer-events-none">
+                                    <NewspaperSolid />
+                                </div>
+                            </TabAnchor>
+                            <TabAnchor href="/update-status">
+                                <div use:popup={updateBtnHover} class="[&>*]:pointer-events-none">
+                                    <PenToSquareSolid />
+                                </div>
+                            </TabAnchor>
+                        </TabGroup>
+                        <button class="p-0" on:click={drawerOpen}>
+                            <Avatar
+                                {supabase}
+                                url={profile?.avatar_url}
+                                size="!w-10"
+                                name={profile?.display_name}
+                            />
+                        </button>
+                    </div>
+                </svelte:fragment>
+            </AppBar>
+        {/if}
+    </svelte:fragment>
 
-    nav {
-        display: flex;
-        align-items: center;
-        justify-content: space-around;
-        background-color: #424242;
-        height: 50px;
-
-        span {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100%;
-
-            img {
-                width: 48px;
-                height: auto;
-            }
-
-            a {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: space-evenly;
-                width: 60px;
-                height: inherit;
-                margin: 0 6px;
-                color: white;
-                text-decoration: none;
-
-                i {
-                    font-size: 24px;
-                }
-
-                span {
-                    font-size: 8px;
-                    height: fit-content;
-                    white-space: nowrap;
-                }
-
-                &:hover {
-                    background-color: white;
-                    color: black;
-                }
-            }
-        }
-    }
-
-    footer {
-        width: 100%;
-        bottom: 0;
-        background-color: #2d2d2d;
-        margin-top: 24px;
-
-        span {
-            width: 100%;
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: space-around;
-
-            @media screen and (max-width: 768px) {
-                flex-direction: column;
-            }
-        }
-    }
-</style>
+    <div>
+        <slot />
+    </div>
+</AppShell>

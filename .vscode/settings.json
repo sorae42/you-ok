@@ -1,0 +1,14 @@
+{
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "server": "db.evysfospzxtqjdepjakz.supabase.co",
+            "port": 5432,
+            "driver": "PostgreSQL",
+            "name": "YouOkay",
+            "database": "postgres",
+            "username": "postgres"
+        }
+    ],
+    "typescript.tsdk": "node_modules/typescript/lib"
+}

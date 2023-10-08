@@ -1,6 +1,11 @@
 {
     "disallowed_name": [
         "UNREGISTERED",
-        "unregistered"
+        "unregistered",
+        "edit-profile",
+        "edit",
+        "profile-edit",
+        "feed",
+        "news-feed"
     ]
 }
