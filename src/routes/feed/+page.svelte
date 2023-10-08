@@ -31,20 +31,6 @@
             </div>
         </Masonry>
     {:then statusItems}
-        <div class="card flex flex-col justify-around rounded-lg p-4 lg:flex-row">
-            <div>
-                <h3 class="h3">YouOkay is still being reworked on</h3>
-                <p class="[&>*]:inline">
-                    Some features are not already to be used.
-                </p>
-            </div>
-            <div class="flex align-middle">
-                <a href="mailto:bonniefoxy2009@gmail.com" class="variant-filled-tertiary btn gap-2">
-                    <CommentsSolid /> Send Feedback
-                </a>
-            </div>
-        </div>
-        <br />
         {#if statusItems.length > 0}
             <Masonry
                 items={statusItems}
