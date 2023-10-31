@@ -27,7 +27,7 @@ label {
     @apply label;
 }
 
-input {
+input, textarea {
     @apply input;
 }
 
