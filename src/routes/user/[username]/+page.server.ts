@@ -14,22 +14,31 @@ export const load: PageServerLoad = async ({ locals: { supabase, getSession }, p
         session,
         username: params.username,
         streamed: {
-            profileInfo: fetchProfile(supabase, params.username)
+            profileInfo: fetchProfile(supabase, params.username),
+            extra: fetchProfileExtras(supabase, params.username)
         }
     };
 };
 
-async function fetchProfile(
-    supabase: SupabaseClient,
-    username: string
-): Promise<Status> {
+async function fetchProfile(supabase: SupabaseClient, username: string) {
     let status = new StatusHelper(supabase);
 
-    const { data, error } = await supabase
+    const { data } = await supabase
         .from('profiles')
         .select('id')
         .eq('username', username)
         .single();
 
     return status.getStatus(data?.id);
+}
+
+// fetch extra details
+async function fetchProfileExtras(supabase: SupabaseClient, username: string) {
+    const { data } = await supabase
+        .from('profiles')
+        .select('id, bio, website, twitter, discord')
+        .eq('username', username)
+        .single();
+    
+    return data;
 }
