@@ -1,6 +1,6 @@
 import { redirect } from '@sveltejs/kit';
 import { StatusHelper, type Status } from '$lib/StatusHelper';
-import type { PostgrestError, SupabaseClient } from '@supabase/supabase-js';
+import type { SupabaseClient } from '@supabase/supabase-js';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ locals: { supabase, getSession }, params }) => {
@@ -12,6 +12,7 @@ export const load: PageServerLoad = async ({ locals: { supabase, getSession }, p
 
     return {
         session,
+        username: params.username,
         streamed: {
             profileInfo: fetchProfile(supabase, params.username)
         }
