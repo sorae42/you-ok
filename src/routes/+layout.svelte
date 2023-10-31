@@ -148,7 +148,5 @@
         {/if}
     </svelte:fragment>
 
-    <div>
-        <slot />
-    </div>
+    <slot />
 </AppShell>
