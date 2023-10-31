@@ -15,7 +15,7 @@
 </script>
 
 <svelte:head>
-    <title>Feed - YouOkay</title>
+    <title>Your Feed</title>
 </svelte:head>
 
 <div class="p-2 lg:p-4">
