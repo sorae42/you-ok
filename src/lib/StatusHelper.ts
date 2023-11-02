@@ -31,23 +31,7 @@ export class StatusHelper {
         this.supabase = sb;
     }
 
-    public async getStatusfromUsername(username: string) {
-        try {
-            const { data, error } = await this.supabase
-                .from('profiles')
-                .select('id')
-                .eq('username', username)
-                .single();
-
-            if (error) throw error;
-
-            return this.getStatus(data.id);
-        } catch (error) {
-            return error; 
-        }
-    }
-
-    public async getStatus(userID: string) {
+    public async getStatus(userID: string): Promise<Status> {
         try {
             const { data, error, status } = await this.supabase
                 .from('statuses')
@@ -59,8 +43,8 @@ export class StatusHelper {
 
             if (error) throw error;
 
-            // FIXME: this works but types are not parsed correctly so there are errors
-            // @ts-ignore - remove this to see the error
+            // FIXME: profiles is being seen as an array of object
+            // @ts-ignore
             const profileData: Profile = data.profiles;
         
             let userStatus: Status = {
@@ -77,8 +61,8 @@ export class StatusHelper {
             };
 
             return userStatus;
-        } catch (error) {
-            return {httpStatus: 404, error};
+        } catch (error: any) {
+            return error;
         }
     }
 }
