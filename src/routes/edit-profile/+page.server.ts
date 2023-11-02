@@ -1,4 +1,3 @@
-import type { ProfileData } from '$lib/Interfaces';
 import { ActionFailure, fail, redirect } from '@sveltejs/kit';
 
 export const load = async ({ locals: { supabase, getSession } }) => {

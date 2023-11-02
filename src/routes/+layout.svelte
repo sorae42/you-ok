@@ -128,11 +128,6 @@
                                     <NewspaperSolid />
                                 </div>
                             </TabAnchor>
-                            <TabAnchor href="/update-status">
-                                <div use:popup={updateBtnHover} class="[&>*]:pointer-events-none">
-                                    <PenToSquareSolid />
-                                </div>
-                            </TabAnchor>
                         </TabGroup>
                         <button class="p-0" on:click={drawerOpen}>
                             <Avatar

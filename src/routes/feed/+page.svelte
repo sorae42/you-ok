@@ -4,14 +4,25 @@
     import { getFormattedDiff } from '$lib/DateTimeHelper.js';
     import { CommentsSolid, FaceFrownSolid, FaceSmileBeamSolid } from 'svelte-awesome-icons';
     import type { PageData } from './$types';
+    import { enhance } from '$app/forms';
 
     export let data: PageData;
 
     let { session, supabase, streamed } = data;
     $: ({ session, supabase, streamed } = data);
 
-    let nItems = 5;
+    let loading = false;
+    let profileForm: HTMLFormElement;
+
+    let nItems = 4;
     $: items = [...Array(nItems).keys()];
+
+    const handleSubmit = () => {
+        loading = true;
+        return async () => {
+            loading = false;
+        };
+    };
 </script>
 
 <svelte:head>
@@ -19,11 +30,38 @@
 </svelte:head>
 
 <div class="p-2 lg:p-4">
+    <div class="flex justify-center">
+        <div class="card rounded-lg p-4 [&>*>*]:my-1">
+            {#await streamed.user}
+                <div class="placeholder animate-pulse" />
+                <br />
+                <div class="placeholder animate-pulse" />
+            {:then userStatus}
+                <form
+                    action="?/update"
+                    method="post"
+                    use:enhance={handleSubmit}
+                    bind:this={profileForm}
+                >
+                    <select name="status" id="status" class="select">
+                        <option value="true">{userStatus.string_good}</option>
+                        <option value="false" selected={!userStatus.is_well}>
+                            {userStatus.string_bad}
+                        </option>
+                    </select>
+                    <!-- prettier-ignore -->
+                    <textarea name="status-text" id="status-text" rows="3">{userStatus.status_text}</textarea>
+                    <input type="submit" value="Update Status" disabled={loading} />
+                </form>
+            {/await}
+        </div>
+    </div>
+    <br />
     {#await streamed.statusList}
         <!-- TODO: make better placeholder -->
         <Masonry {items} duration={0} minColWidth={500} animate={false}>
             <div class="card rounded-lg p-4 [&>*]:rounded-xl">
-                <div class="!placeholder-circle w-12 animate-pulse"></div>
+                <div class="!placeholder-circle w-12 animate-pulse" />
                 <br />
                 <div class="placeholder animate-pulse" />
                 <br />
